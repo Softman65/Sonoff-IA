@@ -12,38 +12,13 @@ function clear() {
     READLINE.clearLine(process.stdout, 0);
     READLINE.clearScreenDown(process.stdout);
 }
-var _xdevices = {
-     ewelink:{
-        email: 'rbenitez2012@gmail.com',
-        password: '12345678',
-        region: 'us',
-    },
-    sonoff: {
-        '1000cafa5b': {
-            id:'1000cafa5b',
-            coords: { lat: 40.8086994, long: -3.7719738 },
-            devices: [1, 1, 1, 1],
-            program: 'EveryHour',
-            params: {
-                Hour: null , //new Date().getHours(),
-                periodo: 1,
-                lapso: 'H',
-                conditions: {
-                    IsDayTime: {
-                        dia: true,
-                        noche: false
-                    },
-                    ApparentTemperature: 8,
-                    rain:0.7,
 
-                },
-            }
-        }
-    },
-    state: false,
-    counter: 0,
-    _k:null,
-}
+var _xdevices = JSON.parse(require('fs').readFileSync('ewelink.json', 'utf-8'))
+_xdevices.state= false,
+_xdevices.counter= 0,
+_xdevices._k= null
+
+
 
 const rail = {
     date: null,
@@ -65,30 +40,46 @@ const rail = {
 
     },
     testWeather: function (Weather, params) {
-        const conditions = params.conditions
+        const _d = ['D','L','M','X','J','V','S']
+        const weekday = _d[new Date().getDay()]
+        const conditions = params.conditions.weekdays[params.conditions.weekdays.everyDays ? 'everyDays' : weekday] 
+
         var _ret = false
-        if (conditions.IsDayTime) {
-            if (Weather.IsDayTime)
-                _ret = conditions.IsDayTime.dia
-        } else {
-            if (!Weather.IsDayTime)
-                _ret = conditions.IsDayTime.noche
+        var _retString = {
+            IsDayTime: null,
+            IsNigthTime: null,
+            rain: null,
+            ApparentTemperature:null
         }
-        if (_ret) {
-            if (conditions.rain) {
-                var _k = params.periodo == 1 ? 'PastHour' : 'Past' + params.periodo + 'Hour'
-                _ret = Weather.PrecipitationSummary[_k].Metric.Value < conditions.rain || Weather.PrecipitationSummary[_k].Unit != 'mm'
+        if (conditions) {
+            if (conditions.IsDayTime) {
+                if (Weather.IsDayTime)
+                    _ret = conditions.IsDayTime.dia
+                    _retString.IsDayTime=_ret?'Ok es de DIA':'riego de DIA no activado'
+            } else {
+                if (!Weather.IsDayTime)
+                    _ret = conditions.IsDayTime.noche
+                    _retString.IsNigthTime = _ret ? 'Ok es de NOCHE' : 'riego de NOCHE no activado'
             }
-            if (conditions.ApparentTemperature && _ret)
-                _ret = Weather.ApparentTemperature.Metric.Value > conditions.ApparentTemperature
+            if (_ret) {
+                if (conditions.rain) {
+                    var _k = params.periodo == 1 ? 'PastHour' : 'Past' + params.periodo + 'Hour'
+                    _ret = Weather.PrecipitationSummary[_k].Metric.Value < conditions.rain || Weather.PrecipitationSummary[_k].Metric.Unit != 'mm'
+                    _retString.rain = (_ret ? 'OK ' : 'NO ') + ('en ' + _k + ':' + Weather.PrecipitationSummary[_k].Metric.Value + ' ' + Weather.PrecipitationSummary[_k].Metric.Unit + ' -> conditions <' + conditions.rain)
+                }
+                if (conditions.ApparentTemperature) {
+                    const _c = Weather.ApparentTemperature.Metric.Value > conditions.ApparentTemperature
+                    _retString.ApparentTemperature = (_c ? 'OK ' : 'NO ') + (Weather.ApparentTemperature.Metric.Value + 'ºC ' + ' -> conditions >' + conditions.ApparentTemperature)
+                    _ret = _ret && _c
 
+                }
+            }
         }
-
-        return _ret
+        return { _r: _retString, _response: _ret, _w: Weather }
     },
     go: function (devices) {
         setTimeout(function () {
-
+            clear()
             if (rail.works.length > 0) {
                 const p = rail.works[0]
                 rail.works = _.drop(rail.works)
@@ -269,7 +260,8 @@ const rail = {
                 rail.Api.accuweather.loadData('currentconditions', '', function (Weather) {
                     console.log('response', Weather)
                     if (Weather[0]) {
-                        if (rail.testWeather(Weather[0], _params )) {
+                        const IA = rail.testWeather(Weather[0], _params)
+                        if (IA._response) {
                             rail.Api.ewelink_sys.go(program, [], function (jsonData) {
                                 _cb()
                             })
