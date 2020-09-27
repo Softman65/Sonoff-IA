@@ -21,15 +21,27 @@ _xdevices._k= null
 
 
 const rail = {
+    fs:require('fs'),
+    path: require('path'),
+    inquirer: require('inquirer'),
+    mysql: require('mysql'),
     date: null,
     sunset: null,
     sunrise: null,
     works: [],
     initialize: function (devices) {
+        require('./modules/sql/sql_common.js')(this, function (SQL, app) {
+            app.commonSQL = SQL
+            //app.commonSQL.SQLquery = require('../sql_storeprocs.js')(app)
 
-        this.Api.ewelink_sys.connection = new ewelink(devices.ewelink)
-        this.devices(devices, 'init')
-        this.go(devices)
+            app.commonSQL.init(app, { SQL: { db: null } }, 'db_keys', function (textDb) {
+                app.commonSQL.db = textDb.SQL.db
+
+                app.Api.ewelink_sys.connection = new ewelink(devices.ewelink)
+                app.devices(devices, 'init')
+                app.go(devices)
+            })
+        })
     },
     devices: function (devices,_f) {
         var _k = _.keys(devices.sonoff)
@@ -79,7 +91,14 @@ const rail = {
     },
     go: function (devices) {
         setTimeout(function () {
-            clear()
+            if (rail.lastminute != new Date().getMinutes()) {
+                    rail.lastminute = new Date().getMinutes()
+                    rail.commonSQL.db.query('SELECT 1', function (err, record) {
+                        console.log('refresh mysql connect')
+                    })
+        
+            }
+            //clear()
             if (rail.works.length > 0) {
                 const p = rail.works[0]
                 rail.works = _.drop(rail.works)
@@ -263,8 +282,10 @@ const rail = {
                         const IA = rail.testWeather(Weather[0], _params)
                         if (IA._response) {
                             rail.Api.ewelink_sys.go(program, [], function (jsonData) {
-                                _cb()
+                                _cb(IA)
                             })
+                        } else {
+                            _cb(IA)
                         }
                     } else {
                         console.log(Weather[0] ? 'es de Noche' : 'sobrepasado el limite de llamadas a API accuweather') 
@@ -277,8 +298,11 @@ const rail = {
             },
             compute: function (device) {
                 if (device.params.Hour == (device.params.lapso == 'H' ? new Date().getHours() : new Date().getMinutes()) ) {
-                    this.start(device, function () {
-                        //debugger
+                    this.start(device, function (IA_response) {
+                        if (IA_response)
+                            rail.commonSQL.procSQL('saveData(?,?,?)', [JSON.stringify(IA_response._w), JSON.stringify(IA_response._r), IA_response._response], function (err, record) {
+                                console.log('save data mysql ' + (err?'FAIL':'Ok') )
+                            })
                     }) 
                 } else {
                     //clear()
