@@ -47,7 +47,7 @@ const rail = {
         var _k = _.keys(devices.sonoff)
         _.each(_k, function (d, i) {
             //console.log(_f, i, devices.sonoff[d])
-            rail.programs[devices.sonoff[d].program][_f](devices.sonoff[d])
+            rail.programs[devices.sonoff[d].program][_f](d, devices.sonoff[d])
         })
 
     },
@@ -105,9 +105,14 @@ const rail = {
                 if (p) {
                     console.log(p)
                     if (p.ewelink)
-                        rail.Api.ewelink_sys.set(p.ewelink[0], p.ewelink[1], p.ewelink[2], function (status) {
-                            rail.go(devices)
+                        rail.commonSQL.procSQL('saveActions(?,?)', [JSON.stringify(p), p.ewelink[2] == 'on'], function (err, record) {
+                            if (err)
+                                debugger
+                            rail.Api.ewelink_sys.set(p.ewelink[0], p.ewelink[1], p.ewelink[2], function (status) {
+                                rail.go(devices)
+                            })
                         })
+
                     if (p.accuweather)
                         console.log(p.accuweather)
 
@@ -160,7 +165,7 @@ const rail = {
                 }
                 if (program.counter >= program.devices.length) {
                     program.false = true
-                    cb(JSON.stringify({ deviceId: program._k, actions: _data }))
+                    cb(JSON.stringify({ deviceId: program.id, actions: _data }))
                 } else {
                     this.put(program.id, program.counter, program.devices[program.counter - 1], function (data) {                    
                         if (!_data) {
@@ -258,7 +263,7 @@ const rail = {
             }
         },
         EveryHour: {
-            init: function (device) {
+            init: function (id, device) {
                 device.params.Hour = device.params.lapso == 'H' ? new Date().getHours() : new Date().getMinutes()
                 //this.setNewHour(device.params)
             },
@@ -281,14 +286,14 @@ const rail = {
                     if (Weather[0]) {
                         const IA = rail.testWeather(Weather[0], _params)
                         if (IA._response) {
-                            rail.Api.ewelink_sys.go(program, [], function (jsonData) {
+                            rail.Api.ewelink_sys.go(program, [], function (actionsDevice) {
                                 _cb(IA)
                             })
                         } else {
                             _cb(IA)
                         }
                     } else {
-                        console.log(Weather[0] ? 'es de Noche' : 'sobrepasado el limite de llamadas a API accuweather') 
+                        console.log('sobrepasado el limite de llamadas a API accuweather') 
                         _cb() 
                     }
                     
@@ -296,7 +301,7 @@ const rail = {
                 })
                
             },
-            compute: function (device) {
+            compute: function (id, device) {
                 if (device.params.Hour == (device.params.lapso == 'H' ? new Date().getHours() : new Date().getMinutes()) ) {
                     this.start(device, function (IA_response) {
                         if (IA_response)
