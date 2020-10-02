@@ -75,9 +75,15 @@ const rail = {
             }
             if (_ret) {
                 if (conditions.rain) {
-                    var _k = params.periodo == 1 ? 'PastHour' : 'Past' + params.periodo + 'Hour'
-                    _ret = Weather.PrecipitationSummary[_k].Metric.Value < conditions.rain || Weather.PrecipitationSummary[_k].Metric.Unit != 'mm'
-                    _retString.rain = (_ret ? 'OK ' : 'NO ') + ('en ' + _k + ':' + Weather.PrecipitationSummary[_k].Metric.Value + ' ' + Weather.PrecipitationSummary[_k].Metric.Unit + ' -> conditions <' + conditions.rain)
+                    if (!Weather.HasPrecipitation) {
+                        var _k = params.periodo == 1 ? 'PastHour' : 'Past' + params.periodo + 'Hour'
+                        _ret = Weather.PrecipitationSummary[_k].Metric.Value < conditions.rain || Weather.PrecipitationSummary[_k].Metric.Unit != 'mm'
+                        _retString.rain = (_ret ? 'OK ' : 'NO ') + ('en ' + _k + ':' + Weather.PrecipitationSummary[_k].Metric.Value + ' ' + Weather.PrecipitationSummary[_k].Metric.Unit + ' -> conditions <' + conditions.rain)
+
+                    } else {
+                        _ret = false
+                        _retString.rain = 'está ' + Weather.PrecipitationType
+                    }
                 }
                 if (conditions.ApparentTemperature) {
                     const _c = Weather.ApparentTemperature.Metric.Value > conditions.ApparentTemperature
@@ -92,10 +98,13 @@ const rail = {
     go: function (devices) {
         setTimeout(function () {
             if (rail.lastminute != new Date().getMinutes()) {
-                    rail.lastminute = new Date().getMinutes()
-                    rail.commonSQL.db.query('SELECT 1', function (err, record) {
-                        console.log('refresh mysql connect')
-                    })
+
+                rail.lastminute = new Date().getMinutes()
+                //console.log('esperando programa dentro de ' + device.params.Hour + (device.params.lapso == 'H' ? ' horas' : ' minutos'))
+
+                rail.commonSQL.db.query('SELECT 1', function (err, record) {
+                    console.log('refresh mysql connect')
+                })
         
             }
             //clear()
@@ -163,19 +172,24 @@ const rail = {
                     program.state = true
                     program.counter = 1
                 }
-                if (program.counter >= program.devices.length) {
-                    program.false = true
+                if (program.counter > program.devices.length) {
+                    program.state = false
                     cb(JSON.stringify({ deviceId: program.id, actions: _data }))
                 } else {
-                    this.put(program.id, program.counter, program.devices[program.counter - 1], function (data) {                    
-                        if (!_data) {
-                            debugger
-                        } else {
-                            _data.push(data)
-                            program.counter = program.counter + 1
-                            rail.Api.ewelink_sys.go(program, _data,cb)
-                        }
-                    })
+                    if (program.devices[program.counter - 1] > 0) {
+                        this.put(program.id, program.counter, program.devices[program.counter - 1], function (data) {
+                            if (!_data) {
+                                debugger
+                            } else {
+                                _data.push(data)
+                                program.counter = program.counter + 1
+                                rail.Api.ewelink_sys.go(program, _data, cb)
+                            }
+                        })
+                    } else {
+                        program.counter = program.counter + 1
+                        rail.Api.ewelink_sys.go(program, _data, cb)
+                    }
                 }
             },
             put: function (deviceId, relay, time,cb) {
@@ -311,7 +325,6 @@ const rail = {
                     }) 
                 } else {
                     //clear()
-                    console.log('esperando programa dentro de ' + device.params.Hour + (device.params.lapso == 'H' ?' horas':' minutos') )
                 }
             }
         }
