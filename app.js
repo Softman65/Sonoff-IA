@@ -18,18 +18,26 @@ _xdevices.state= false,
 _xdevices.counter= 0,
 _xdevices._k= null
 
+var fs = require('fs');
+var path = require('path');
+var http = require('http');
+
 
 
 const rail = {
     fs:require('fs'),
     path: require('path'),
+    http : require('http'),
     inquirer: require('inquirer'),
     mysql: require('mysql'),
     date: null,
     sunset: null,
     sunrise: null,
     works: [],
+    mimes: require("./mimes.json"),
+    staticBasePath : './http',
     initialize: function (devices) {
+
         require('./modules/sql/sql_common.js')(this, function (SQL, app) {
             app.commonSQL = SQL
             //app.commonSQL.SQLquery = require('../sql_storeprocs.js')(app)
@@ -37,17 +45,55 @@ const rail = {
             app.commonSQL.init(app, { SQL: { db: null } }, 'db_keys', function (textDb) {
                 app.commonSQL.db = textDb.SQL.db
 
+                app.httpServer = app.http.createServer(app.staticServe);
+                app.io = require('socket.io').listen(app.httpServer);
+
+
+                app.io.sockets.on('connection', function (socket) {
+                    socket.emit('news', { hello: 'world' });
+                    socket.on('my other event', function (data) {
+                        console.log(data);
+                    });
+                });
+
+                app.httpServer.listen(8090);
+
                 app.Api.ewelink_sys.connection = new ewelink(devices.ewelink)
                 app.devices(devices, 'init')
                 app.go(devices)
             })
         })
     },
+    staticServe : function (req, res) {
+        var resolvedBase = rail.path.resolve(rail.staticBasePath);
+        var safeSuffix = rail.path.normalize(req.url).replace(/^(\.\.[\/\\])+/, '');
+        var fileLoc = rail.path.join(resolvedBase, safeSuffix);
+
+        fs.readFile(fileLoc, function (err, data) {
+            if (err) {
+                res.writeHead(404, 'Not Found');
+                res.write('404: File Not Found!');
+                return res.end();
+            }
+            var extension = req.url.substring(
+                req.url.lastIndexOf(".")
+            );
+
+            var type = mimes[extension];
+            if (type) {
+                res.setHeader("content-type", type);
+            }
+            res.statusCode = 200;
+
+            res.write(data);
+            return res.end();
+        });
+    },
     devices: function (devices,_f) {
         var _k = _.keys(devices.sonoff)
         _.each(_k, function (d, i) {
-            //console.log(_f, i, devices.sonoff[d])
-            rail.programs[devices.sonoff[d].program][_f](d, devices.sonoff[d])
+            if (devices.sonoff[d].program)
+                rail.programs[devices.sonoff[d].program][_f](d, devices.sonoff[d])
         })
 
     },
