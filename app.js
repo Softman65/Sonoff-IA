@@ -3,7 +3,7 @@
 require('console-stamp')(console, 'HH:MM:ss');
 require('./modules/sun.js')
 
-const ewelink = require('ewelink-api');
+//const ewelink = require('ewelink-api');
 const _ = require('lodash')
 const READLINE = require('readline');
 
@@ -88,10 +88,10 @@ const rail = {
                 app.lastminute = new Date().getMinutes()
                 //console.log('esperando programa dentro de ' + device.params.Hour + (device.params.lapso == 'H' ? ' horas' : ' minutos'))
 
-                app.commonSQL.db.query('SELECT 1', function (err, record) {
-                    if (err)
-                        debugger
-                })
+                //app.commonSQL.db.query('SELECT 1', function (err, record) {
+                //    if (err)
+                //        debugger
+                //})
         
             }
             //clear()
@@ -249,10 +249,10 @@ const rail = {
                     if (_relay.T == (_relay.params.EveryTime.lapso == 'H' ? new Date().getHours() : new Date().getMinutes())) {
                         _this[_relay.program].start(app, _this, _relay, function (IA_response) {
                             if (IA_response) {
-                                rail.commonSQL.procSQL('saveData(?,?,?)', [JSON.stringify(IA_response._w), JSON.stringify(IA_response._r), IA_response._response], function (err, record) {
-                                    console.log('save data mysql ' + (err ? 'FAIL' : 'Ok'))
+                                //rail.commonSQL.procSQL('saveData(?,?,?)', [JSON.stringify(IA_response._w), JSON.stringify(IA_response._r), IA_response._response], function (err, record) {
+                                    //console.log('save data mysql ' + (err ? 'FAIL' : 'Ok'))
                                     _this.functions.compute(app, _relay.e, device, _cb)
-                                })
+                                //})
                             } else {
                                 debugger
                             }
