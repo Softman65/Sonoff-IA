@@ -19,7 +19,7 @@ module.exports = function (app, callback) {
                     database: _ithis.filedb(),
                     multipleStatements: true,
                     //waitForConnection: true,
-                    insecureAuth: true
+                     // insecureAuth: true
                 }
                 //const con = app.mysql.createConnection(_credenciales)
 
@@ -112,7 +112,7 @@ module.exports = function (app, callback) {
                             //database: dbname, //credenciales.database,
                             multipleStatements: true,
                             waitForConnection: true,
-                            insecureAuth: true
+                             // insecureAuth: true
 
                         })
                         _ithis.getConnect(options, callback)
@@ -128,7 +128,7 @@ module.exports = function (app, callback) {
                             //database: dbname,
                             multipleStatements: true,
                             waitForConnection: true,
-                            insecureAuth: true
+                             // insecureAuth: true
                         })
                         _ithis.getConnect(dbname, options, callback, JSON.parse(_JSON.toString()))
                     } else {

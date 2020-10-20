@@ -1,30 +1,13 @@
 module.exports = function (app,devices, _f) {
 
+    app._.each(devices, function (dn) {
 
-        var _k = app._.keys(devices.sonoff)
+        var _k = app._.keys(dn)
         app._.each(_k, function (d) {
-            if (devices.sonoff[d].active) {
-                app.programs.Devices[d] = {
-                    type: devices.sonoff[d].type,
-                    task: devices.sonoff[d].task,
-                    coords: devices.sonoff[d].coords,
-                    askToAccuweather: devices.sonoff[d].askToAccuweather,
-                    relays: []
-                }
 
-                app._.each(devices.sonoff[d].relays, function (_relay, i) {
-                    _relay.id = d
-                    _relay.e = i + 1
+            app.programs.Devices['_'+d](app, dn[d])
 
-                    //init: function (_this, device) {   
-
-                    _relay.T = _relay.params.EveryTime.lapso == 'H' ? new Date().getHours() : new Date().getMinutes()
-                    app.programs.Devices[_relay.id].relays.push(_relay)
-
-                    //rail.programs[_relay.program][_f](rail.programs, _relay)
-                })
-            }
         })
-
+    })
     
 }

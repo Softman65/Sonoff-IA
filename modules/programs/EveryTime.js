@@ -9,7 +9,7 @@ module.exports = {
         var _params = program.params
         this.setNextTime(program, _params)
 
-        console.log('ask', program.action)
+        console.log('ask', program.action, program.id, program.e)
         _this.functions[program.action](app, _this, program, _params, _cb)
 
     }, setNextTime: function (program, _params) {

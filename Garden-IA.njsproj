@@ -28,7 +28,11 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="Accuwheather.json">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="app.js" />
+    <Content Include="ewelink - Copy.json" />
     <Content Include="ewelink.json">
       <SubType>Code</SubType>
     </Content>
@@ -46,6 +50,12 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="modules\devices.js">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="modules\devices\_sonoff.js">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="modules\functions.js">
       <SubType>Code</SubType>
     </Content>
     <Content Include="modules\load.js">
@@ -78,6 +88,7 @@
   <ItemGroup>
     <Folder Include="modules\" />
     <Folder Include="modules\api\" />
+    <Folder Include="modules\devices\" />
     <Folder Include="modules\programs\" />
     <Folder Include="modules\sql\" />
     <Folder Include="http\" />
