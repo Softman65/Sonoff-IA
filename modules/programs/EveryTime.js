@@ -12,7 +12,8 @@ module.exports = {
         console.log('ask', program.action, program.id, program.e)
         _this.functions[program.action](app, _this, program, _params, _cb)
 
-    }, setNextTime: function (program, _params) {
+    },
+    setNextTime: function (program, _params) {
         if (program.T + _params.EveryTime.periodo <= (_params.EveryTime.lapso == 'H' ? 23 : 59)) {
             program.T = program.T + _params.EveryTime.periodo
         } else {

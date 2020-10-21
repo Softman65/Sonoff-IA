@@ -104,7 +104,7 @@ module.exports = {
                 }
             }
             if (_ret) {
-                if (conditions.rain) {
+                if (conditions.rain && Weather.PrecipitationSummary[_k]) {
                     if (Weather.PrecipitationSummary[_k].Metric.Value < conditions.rain || Weather.PrecipitationSummary[_k].Metric.Unit != 'mm') {
                         _ret = true
                     }
