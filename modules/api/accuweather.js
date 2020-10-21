@@ -27,6 +27,7 @@ module.exports =  {
                         app.fs.unlink(app.PROJECT_DIR + 'dataservice.accuweather.JSON', function () {
                             if (app._.isArray(_w)) {
                                 app.fs.writeFile(app.PROJECT_DIR + 'dataservice.accuweather.JSON', data, function (err, datax) {
+                                    app.io.emit('tick', { Wheather : _w });
                                     cb(_w)
                                 })
                             } else {

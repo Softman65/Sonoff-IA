@@ -12,7 +12,7 @@ module.exports = function (devices, _cb) {
 
 
                 app.io.sockets.on('connection', function (socket) {
-                    socket.emit('news', { hello: 'world' });
+                    socket.emit('news', { Wheather: app.programs.Weather, Devices: app.programs.Devices, program: app.programs.jsonData });
                     socket.on('my other event', function (data) {
                         console.log(data);
                     });
@@ -37,6 +37,7 @@ module.exports = function (devices, _cb) {
                             app.run(app, app.programs.Devices)
                         })
                     } else {
+                        app.io.emit('tick', { Wheather: app.programs.Weather });
                         app.run(app, app.programs.Devices)
                     }
 

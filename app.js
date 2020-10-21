@@ -132,6 +132,7 @@ const rail = {
         }, 1000)
     },
     programs: {
+        jsonData: _xdevices[0],
         Weather:[],
         Devices: {
             _sonoff: require('./modules/devices/_sonoff.js'),
