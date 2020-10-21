@@ -16,7 +16,7 @@ module.exports = {
 
         const IA = _this.functions.testWeather(_this.Weather[0], _params)
         if (IA._response) {
-            _push(app, app.Api.ewelink_sys, app.works, program, [], _params, IA, _cb)
+            _push(app, app.Api[program.engine], app.works, program, [], _params, IA, _cb)
         } else {
             _cb(IA)
         }
@@ -76,7 +76,7 @@ module.exports = {
         const _d = ['D', 'L', 'M', 'X', 'J', 'V', 'S']
         const weekday = _d[new Date().getDay()]
         const conditions = params.conditions.weekdays[params.conditions.weekdays.everyDays ? 'everyDays' : weekday]
-        const _k = params.EveryTime.periodo == 1 ? 'PastHour' : 'Past' + params.EveryTime.periodo + 'Hour' + (params.EveryTime.periodo > 1 ? 's' : '')
+        const _k = params.EveryTime.periodo <=1 ? 'PastHour' : 'Past' + params.EveryTime.periodo + 'Hour' + (params.EveryTime.periodo > 1 ? 's' : '')
         const _hour = new Date().getHours()
 
         var _ret = false
@@ -105,17 +105,18 @@ module.exports = {
             }
             if (_ret) {
                 if (conditions.rain) {
-                    if (!Weather.HasPrecipitation) {
-                        _ret = Weather.PrecipitationSummary[_k].Metric.Value < conditions.rain || Weather.PrecipitationSummary[_k].Metric.Unit != 'mm'
+                    if (Weather.PrecipitationSummary[_k].Metric.Value < conditions.rain || Weather.PrecipitationSummary[_k].Metric.Unit != 'mm') {
+                        _ret = true
+                    }
                         _retString.rain = (_ret ? 'OK ' : 'NO ') + ('en ' + _k + ':' + Weather.PrecipitationSummary[_k].Metric.Value + ' ' + Weather.PrecipitationSummary[_k].Metric.Unit + ' -> conditions <' + conditions.rain)
 
-                    } else {
-                        _ret = false
-                        _retString.rain = 'está ' + Weather.PrecipitationType
-                    }
+                    //} else {
+                    //    _ret = false
+                    //    _retString.rain = 'está ' + Weather.PrecipitationType
+                    //}
                 }
                 if (conditions.ApparentTemperature && _ret) {
-                    const _c = Weather.ApparentTemperature.Metric.Value > conditions.ApparentTemperature
+                    const _c = Weather.ApparentTemperature.Metric.Value >= conditions.ApparentTemperature
                     _retString.ApparentTemperature = (_c ? 'OK ' : 'NO ') + (Weather.ApparentTemperature.Metric.Value + 'ºC ' + ' -> conditions >' + conditions.ApparentTemperature)
                     _ret = _ret && _c
 
@@ -142,6 +143,7 @@ module.exports = {
             const _this = app.programs
             const _relay = relays[n_relay]
             _relay.task = device.task
+            _relay.engine = device.obj
             if (_relay.T == (_relay.params.EveryTime.lapso == 'H' ? new Date().getHours() : new Date().getMinutes())) {
                 _this[_relay.program].start(app, _this, _relay, function (IA_response) {
                     if (IA_response) {

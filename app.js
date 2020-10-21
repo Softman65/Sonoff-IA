@@ -28,6 +28,7 @@ const rail = {
     inquirer: require('inquirer'),
     mysql: require('mysql'),
     ewelink: require('ewelink-api'),
+    
     PROJECT_DIR: __dirname + '\\',
 
     date: null,
@@ -40,8 +41,10 @@ const rail = {
     staticServe: require('./modules/staticServer.js'),
     devices: require('./modules/devices.js') ,
     Api: {
+        //common: require('./modules/api/commons.js'),
         accuweather: require('./modules/api/accuweather.js'),
         ewelink_sys: require('./modules/api/ewelink.js'),
+        i2c_sys: require('./modules/api/i2c.js')
     },
     nextDevice : function (app, Devices, _k, e, cb) {
         var _this = this
@@ -129,6 +132,7 @@ const rail = {
     programs: {
         Devices: {
             _sonoff: require('./modules/devices/_sonoff.js'),
+            _i2c: require('./modules/devices/_i2c.js'),
         },
         functions: require('./modules/functions.js'),
         Sun: require('./modules/programs/sun.js'),

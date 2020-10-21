@@ -46,10 +46,19 @@
       <SubType>Code</SubType>
       <TestFramework>Jasmine</TestFramework>
     </Content>
+    <Content Include="modules\api\commons.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="modules\api\ewelink.js">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="modules\api\i2c.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="modules\devices.js">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="modules\devices\_i2c.js">
       <SubType>Code</SubType>
     </Content>
     <Content Include="modules\devices\_sonoff.js">
@@ -77,6 +86,9 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="package.json" />
+    <Content Include="pi.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="README.md" />
     <Content Include="server.js">
       <SubType>Code</SubType>

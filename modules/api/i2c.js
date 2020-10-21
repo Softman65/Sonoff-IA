@@ -1,28 +1,6 @@
 module.exports = {
 
-    connection: null,
     functions: {
-        task: {
-            relay: function (device, arrayWorks, params) {
-                arrayWorks.push([{ ewelink_sys: [device.id, device.e, params.action] } ])
-            } ,           
-            delay: function (device, arrayWorks, _time) {
-                var n=0
-                if (_time.s && _time.s > 0) {
-                    for (n == 0; n < _time.s; n++) {
-                        arrayWorks.push([])
-                    }
-                }
-            },
-            put: function (device, arrayWorks, params) {
-                arrayWorks.push([{ ewelink_sys: [params.device, params.relay, params.action] }])
-            }
-
-
-        },
-        put_ewelink: function (arrayWorks, deviceId, relay, action, cb) {
-            arrayWorks.push([{ ewelink_sys: [deviceId, relay, _time.a] }])
-        },
         timer: function (app, arrayWorks, device, time, cb) {
             var fn_task = this.task
             var deviceId = device.id
@@ -63,10 +41,10 @@ module.exports = {
                 if (device.task[_time.a]) {
                     app._.each(device.task[_time.a], function (task) {
                         var _k = app._.keys(task)[0]
-                        fn_task[_k](device, arrayWorks, task[_k] )
+                        fn_task[_k](device, arrayWorks, task[_k])
                     })
                 } else {
-                    arrayWorks.push([{ ewelink_sys: [deviceId, relay, _time.a] }])
+                    arrayWorks.push([{ i2c_sys: [deviceId, relay, _time.a] }])
                 }
                 _out.push({ _time: _now, relay: relay, action: _time.a })
                 return _now
@@ -89,7 +67,26 @@ module.exports = {
             }
             cb(_out)
         },
+        task: {
+            relay: function (device, arrayWorks, params) {
+                arrayWorks.push([{ i2c_sys: [device.id, device.e, params.action] }])
+            },
+            delay: function (device, arrayWorks, _time) {
+                var n = 0
+                if (_time.s && _time.s > 0) {
+                    for (n == 0; n < _time.s; n++) {
+                        arrayWorks.push([])
+                    }
+                }
+            },
+            put: function (device, arrayWorks, params) {
+                arrayWorks.push([{ i2c_sys: [params.device, params.relay, params.action] }])
+            }
+
+
+        },
     },
+    
     push: function (app, _this, arrayWorks, program, _data, cb) {
         //console.log(program)
         app._.each(program.params.actions, function (action) {
@@ -113,20 +110,33 @@ module.exports = {
             var _nameFunc = app._.keys(action)
             _this.functions[_nameFunc[0]](app, arrayWorks, device, action[_nameFunc[0]], cb)
         } else {
-            arrayWorks.push([{ ewelink_sys: [deviceId, relay, action] }])
+            arrayWorks.push([{ i2c_sys: [deviceId, relay, action] }])
             cb(JSON.stringify({ deviceId: deviceId, relay: relay, actions: action }))
         }
     },
     set: async function (app, deviceid, n, op, cb) {
         //console.log(op, n)
         //return await connection.setDevicePowerState(deviceid, op, n)
-        await this.connection.getDevices()
+        //await this.connection.getDevices()
         //console.log(devices)
-        const status = await this.connection.setDevicePowerState(deviceid, op, n)
-        console.log(deviceid, op, n, status)
-        cb(status)
- 
-    }
+        //const status = await this.connection.setDevicePowerState(deviceid, op, n)
 
-    
+        const cmd = "i2cset -y 1 " + deviceid + ' ' + n + ' ' + op
+        const { exec } = require("child_process");
+        exec(cmd, (error, stdout, stderr) => {
+            if (error) {
+                console.log(`error: ${error.message}`);
+                //cb(status);
+            }
+            if (stderr) {
+                console.log(`stderr: ${stderr}`);
+                //cb(status);
+            } else {
+                console.log(`stdout: ${stdout}`);
+            }
+            console.log(deviceid, op, n)            
+            cb()
+        });
+
+    }
 }

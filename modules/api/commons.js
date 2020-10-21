@@ -1,28 +1,5 @@
 module.exports = {
-
-    connection: null,
     functions: {
-        task: {
-            relay: function (device, arrayWorks, params) {
-                arrayWorks.push([{ ewelink_sys: [device.id, device.e, params.action] } ])
-            } ,           
-            delay: function (device, arrayWorks, _time) {
-                var n=0
-                if (_time.s && _time.s > 0) {
-                    for (n == 0; n < _time.s; n++) {
-                        arrayWorks.push([])
-                    }
-                }
-            },
-            put: function (device, arrayWorks, params) {
-                arrayWorks.push([{ ewelink_sys: [params.device, params.relay, params.action] }])
-            }
-
-
-        },
-        put_ewelink: function (arrayWorks, deviceId, relay, action, cb) {
-            arrayWorks.push([{ ewelink_sys: [deviceId, relay, _time.a] }])
-        },
         timer: function (app, arrayWorks, device, time, cb) {
             var fn_task = this.task
             var deviceId = device.id
@@ -63,7 +40,7 @@ module.exports = {
                 if (device.task[_time.a]) {
                     app._.each(device.task[_time.a], function (task) {
                         var _k = app._.keys(task)[0]
-                        fn_task[_k](device, arrayWorks, task[_k] )
+                        fn_task[_k](device, arrayWorks, task[_k])
                     })
                 } else {
                     arrayWorks.push([{ ewelink_sys: [deviceId, relay, _time.a] }])
@@ -89,44 +66,23 @@ module.exports = {
             }
             cb(_out)
         },
-    },
-    push: function (app, _this, arrayWorks, program, _data, cb) {
-        //console.log(program)
-        app._.each(program.params.actions, function (action) {
-            _this.put(app, _this, arrayWorks, program, action, function (data) {
-                if (!_data) {
-                    debugger
-                } else {
-                    _data.push(data)
+        task: {
+            relay: function (device, arrayWorks, params) {
+                arrayWorks.push([{ ewelink_sys: [device.id, device.e, params.action] }])
+            },
+            delay: function (device, arrayWorks, _time) {
+                var n = 0
+                if (_time.s && _time.s > 0) {
+                    for (n == 0; n < _time.s; n++) {
+                        arrayWorks.push([])
+                    }
                 }
-            })
-        })
-        cb(JSON.stringify({ deviceId: program.id, actions: _data }))
+            },
+            put: function (device, arrayWorks, params) {
+                arrayWorks.push([{ ewelink_sys: [params.device, params.relay, params.action] }])
+            }
 
-    },
-    put: function (app, _this, arrayWorks, device, action, cb) { //(app, _this, arrayWorks, deviceId, relay, action, cb)
 
-        const deviceId = device.id
-        const relay = device.e
-
-        if (!app._.isString(action)) {
-            var _nameFunc = app._.keys(action)
-            _this.functions[_nameFunc[0]](app, arrayWorks, device, action[_nameFunc[0]], cb)
-        } else {
-            arrayWorks.push([{ ewelink_sys: [deviceId, relay, action] }])
-            cb(JSON.stringify({ deviceId: deviceId, relay: relay, actions: action }))
-        }
-    },
-    set: async function (app, deviceid, n, op, cb) {
-        //console.log(op, n)
-        //return await connection.setDevicePowerState(deviceid, op, n)
-        await this.connection.getDevices()
-        //console.log(devices)
-        const status = await this.connection.setDevicePowerState(deviceid, op, n)
-        console.log(deviceid, op, n, status)
-        cb(status)
- 
+        },
     }
-
-    
 }

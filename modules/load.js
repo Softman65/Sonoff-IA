@@ -21,7 +21,7 @@ module.exports = function (devices, _cb) {
                 app.httpServer.listen(8090);
 
 
-                app.fs.access(app.PROJECT_DIR + 'dataservice.accuweather.JSON', rail.fs.F_OK, function (err) {
+                app.fs.access(app.PROJECT_DIR + 'dataservice.accuweather.JSON', app.fs.F_OK, function (err) {
                     if (!err) {
                         app.programs.Weather = JSON.parse(app.fs.readFileSync(app.PROJECT_DIR + 'dataservice.accuweather.JSON', 'utf8'));
                     }
