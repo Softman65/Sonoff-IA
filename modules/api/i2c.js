@@ -131,8 +131,6 @@ module.exports = {
             if (stderr) {
                 console.log(`stderr: ${stderr}`);
                 //cb(status);
-            } else {
-                console.log(`stdout: ${stdout}`);
             }
             console.log(deviceid, op, n)            
             cb()
