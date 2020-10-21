@@ -32,6 +32,7 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="app.js" />
+    <Content Include="ewelink - Copy %282%29.json" />
     <Content Include="ewelink - Copy.json" />
     <Content Include="ewelink.json">
       <SubType>Code</SubType>

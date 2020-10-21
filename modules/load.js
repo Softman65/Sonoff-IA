@@ -7,7 +7,7 @@ module.exports = function (devices, _cb) {
             //app.commonSQL.init(app, { SQL: { db: null } }, 'db_keys', function (textDb) {
                 //app.commonSQL.db = textDb.SQL.db
 
-                app.httpServer = app.http.createServer(app.staticServe);
+            app.httpServer = app.http.createServer(app.staticServe(app).staticServer);
                 app.io = require('socket.io').listen(app.httpServer);
 
 
