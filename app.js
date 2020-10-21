@@ -130,6 +130,7 @@ const rail = {
         }, 1000)
     },
     programs: {
+        Weather:[],
         Devices: {
             _sonoff: require('./modules/devices/_sonoff.js'),
             _i2c: require('./modules/devices/_i2c.js'),
