@@ -105,7 +105,7 @@ module.exports = {
             }
             if (_ret) {
                 if (!Weather.PrecipitationSummary[_k])
-                    debugger
+                    console.log(Weather)
 
                 if (conditions.rain && Weather.PrecipitationSummary[_k]) {
                     if (parseInt(Weather.PrecipitationSummary[_k].Metric.Value) < conditions.rain || Weather.PrecipitationSummary[_k].Metric.Unit != 'mm') {
