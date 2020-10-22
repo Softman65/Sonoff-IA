@@ -28,7 +28,8 @@ const rail = {
     inquirer: require('inquirer'),
     mysql: require('mysql'),
     ewelink: require('ewelink-api'),
-    
+    Datastore: require('nedb'),
+
     PROJECT_DIR: __dirname + '\\',
 
     date: null,
@@ -76,26 +77,20 @@ const rail = {
     },
     run: function (app, devices) {
         setTimeout(function () {
-            app.io.emit('tick', { hello: new Date() });
 
             if (app.lastminute != new Date().getMinutes()) {
+                app.io.emit('tick', { hello: new Date() });
 
                 app.lastminute = new Date().getMinutes()
-
-                const _dx = app.programs.Weather[0] ? new Date() - new Date(app.programs.Weather[0].LocalObservationDateTime) > app.Api.accuweather.time_reload : true
+                const _dx = app.programs.Weather ? new Date() - new Date(app.programs.Weather.LocalObservationDateTime) > app.Api.accuweather.time_reload : true
 
                 if (_dx) {
 
-                    //const _type = app._.keys(device.askToWeather)[0]
-
                     app.programs.Weather = {}
-                    app.Api.accuweather.loadData(app, app.Api.accuweather.credentials, 'currentconditions', '', function (Weather) {
+                    app.Api.accuweather.loadData(app, app.Api.accuweather.credentials, 'currentconditions', '', app.Datastore.db.Weather, function (Weather) {
                         app.programs.Weather = Weather
 
-                        //app.programs.functions.compute(app, 0, device, function (app) {
-                        //    _this.nextDevice(app, Devices, _k, e + 1, cb)
-                        //})
-
+                        app.run(app, devices)
                     })
 
                 }
@@ -105,6 +100,8 @@ const rail = {
 
             if (app.works.length > 0) {
                 const p = app.works[0]
+                
+
                 app.works = _.drop(app.works)
                 process.stdout.write('.')
 
@@ -119,14 +116,15 @@ const rail = {
                     app.run(app, devices)
                 }
             } else {
+                const _k = app._.keys(devices)
+
                 if (app.programs.Weather != {}) {
-                    app.nextDevice(app, devices, app._.keys(devices), 0, function (app) {
+                    app.nextDevice(app, devices, _k, 0, function (app) {
                         app.run(app, devices)
                     })
                 } else {
                     app.run(app, devices)
                 }
-   
             }
 
         }, 1000)
@@ -146,32 +144,7 @@ const rail = {
 }
 
 rail.initialize(_xdevices, function (app, devices) {
-
-    
-    app.fs.access(app.PROJECT_DIR + 'dataservice.accuweather.JSON', rail.fs.F_OK, function (err) {
-        if (!err) {
-            app.programs.Weather = JSON.parse(app.fs.readFileSync(app.PROJECT_DIR + 'dataservice.accuweather.JSON', 'utf8'));
-        }
-        app.devices(app, devices, 'init')
-        app.lastminute = new Date().getMinutes()
-
-        const _dx = app.programs.Weather[0] ? new Date() - new Date(app.programs.Weather[0].LocalObservationDateTime) > app.Api.accuweather.time_reload : true
-
-        if (_dx) {
-            //app.programs.Weather = {}
-            app.Api.accuweather.loadData(app, app.Api.accuweather.credentials, 'currentconditions', '', function (Weather) {
-                app.programs.Weather = Weather
-                app.run(app, app.programs.Devices)
-            })
-        } else {
-            app.run(app, app.programs.Devices)
-        }
-
-       
-    })
-
-
-
+    app.run(app, app.programs.Devices)
 })
 
 

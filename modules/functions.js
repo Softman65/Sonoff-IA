@@ -14,7 +14,7 @@ module.exports = {
             })
         }
 
-        const IA = _this.functions.testWeather(_this.Weather[0], _params)
+        const IA = _this.functions.testWeather(_this.Weather, _params)
         if (IA._response) {
             _push(app, app.Api[program.engine], app.works, program, [], _params, IA, _cb)
         } else {
@@ -129,6 +129,7 @@ module.exports = {
                 }
             }
         }
+        console.log(_retString)
         return { _r: _retString, _response: _ret, _w: Weather }
     },
     compute: function (app, n_relay, device, _cb) {
