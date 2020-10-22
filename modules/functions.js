@@ -76,7 +76,7 @@ module.exports = {
         const _d = ['D', 'L', 'M', 'X', 'J', 'V', 'S']
         const weekday = _d[new Date().getDay()]
         const conditions = params.conditions.weekdays[params.conditions.weekdays.everyDays ? 'everyDays' : weekday]
-        const _k = params.EveryTime.periodo <=1 ? 'PastHour' : 'Past' + params.EveryTime.periodo + 'Hour' + (params.EveryTime.periodo > 1 ? 's' : '')
+        const _k = params.EveryTime.periodo <= 1 || params.EveryTime.lapso != "H" ? 'PastHour' : 'Past' + params.EveryTime.periodo + 'Hour' + (params.EveryTime.periodo > 1 ? 's' : '')
         const _hour = new Date().getHours()
 
         var _ret = false
@@ -145,7 +145,7 @@ module.exports = {
             const _relay = relays[n_relay]
             _relay.task = device.task
             _relay.engine = device.obj
-            if (_relay.T == (_relay.params.EveryTime.lapso == 'H' ? new Date().getHours() : new Date().getMinutes())) {
+            if (_relay.T <= (_relay.params.EveryTime.lapso == 'H' ? new Date().getHours() : new Date().getMinutes())) {
                 _this[_relay.program].start(app, _this, _relay, function (IA_response) {
                     if (IA_response) {
                         //rail.commonSQL.procSQL('saveData(?,?,?)', [JSON.stringify(IA_response._w), JSON.stringify(IA_response._r), IA_response._response], function (err, record) {
