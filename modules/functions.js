@@ -103,7 +103,7 @@ module.exports = {
                     _retString.IsNigthTime = _ret ? 'Ok es de NOCHE' : 'riego de NOCHE no activado'
                 }
             }
-            if (_ret && Weather != {}) {
+            if (_ret) {
                 if (!Weather.PrecipitationSummary)
                     console.log(Weather)
 
@@ -175,7 +175,7 @@ module.exports = {
     },
     nextDevice: function (app, Devices, _k, e, cb) {
         var _this = this
-        if (e < _k.length) {
+        if (e < _k.length && Weather != {}) {
             if (_k[e].indexOf('_') == 0) {
                 _this.nextDevice(app, Devices, _k, e + 1, cb)
             } else {
