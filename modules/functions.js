@@ -175,7 +175,7 @@ module.exports = {
     },
     nextDevice: function (app, Devices, _k, e, cb) {
         var _this = this
-        if (e < _k.length && Weather != {}) {
+        if (e < _k.length && app.pregrams.Weather != {}) {
             if (_k[e].indexOf('_') == 0) {
                 _this.nextDevice(app, Devices, _k, e + 1, cb)
             } else {
