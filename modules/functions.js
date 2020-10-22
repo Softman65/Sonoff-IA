@@ -103,7 +103,7 @@ module.exports = {
                     _retString.IsNigthTime = _ret ? 'Ok es de NOCHE' : 'riego de NOCHE no activado'
                 }
             }
-            if (_ret) {
+            if (_ret && Weather.PrecipitationSummary) {
                 if (!Weather.PrecipitationSummary)
                     console.log(Weather)
 
