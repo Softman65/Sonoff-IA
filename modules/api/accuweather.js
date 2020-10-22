@@ -16,12 +16,14 @@ module.exports =  {
 
         //if (!wt) {
             //const http = require('http')
-            app.http.get(this.url(command, data, devicedata), function (resp) {
+        debugger
+        app.http.get(this.url(command, data, devicedata), function (resp) {
                 let data = '';
                 resp.on('data', (chunk) => {
                     data += chunk;
                 });
-                resp.on('end', function () {
+            resp.on('end', function () {
+                    debugger
                     const _data = JSON.parse(data)
                     if (app._.isArray(_data)) {
                         db.ensureIndex({ fieldName: 'LocalObservationDateTime', unique: true }, function (err) {

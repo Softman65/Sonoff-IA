@@ -104,8 +104,11 @@ module.exports = {
                 }
             }
             if (_ret) {
+                if (!Weather.PrecipitationSummary[_k])
+                    debugger
+
                 if (conditions.rain && Weather.PrecipitationSummary[_k]) {
-                    if (Weather.PrecipitationSummary[_k].Metric.Value < conditions.rain || Weather.PrecipitationSummary[_k].Metric.Unit != 'mm') {
+                    if (parseInt(Weather.PrecipitationSummary[_k].Metric.Value) < conditions.rain || Weather.PrecipitationSummary[_k].Metric.Unit != 'mm') {
                         _ret = true
                     }
                         _retString.rain = (_ret ? 'OK ' : 'NO ') + ('en ' + _k + ':' + Weather.PrecipitationSummary[_k].Metric.Value + ' ' + Weather.PrecipitationSummary[_k].Metric.Unit + ' -> conditions <' + conditions.rain)
@@ -116,13 +119,13 @@ module.exports = {
                     //}
                 }
                 if (conditions.ApparentTemperature && _ret) {
-                    const _c = Weather.ApparentTemperature.Metric.Value >= conditions.ApparentTemperature
+                    const _c = parseFloat(Weather.ApparentTemperature.Metric.Value) >= conditions.ApparentTemperature
                     _retString.ApparentTemperature = (_c ? 'OK ' : 'NO ') + (Weather.ApparentTemperature.Metric.Value + 'ºC ' + ' -> conditions >' + conditions.ApparentTemperature)
                     _ret = _ret && _c
 
                 }
                 if (conditions.wind && _ret) {
-                    const _w = Weather.Wind.Speed.Metric.Value < conditions.wind
+                    const _w = parseFloat(Weather.Wind.Speed.Metric.Value) < conditions.wind
                     _retString.Wind = (_w ? 'OK ' : 'NO ') + (Weather.Wind.Speed.Metric.Value + ' speed ' + ' -> conditions >' + conditions.wind)
                     _ret = _ret && _w
 
@@ -168,6 +171,34 @@ module.exports = {
             }
 
             _cb(app)
+        }
+    },
+    nextDevice: function (app, Devices, _k, e, cb) {
+        var _this = this
+        if (e < _k.length) {
+            if (_k[e].indexOf('_') == 0) {
+                _this.nextDevice(app, Devices, _k, e + 1, cb)
+            } else {
+                var device = Devices[_k[e]]
+
+                app.programs.functions.compute(app, 0, device, function (app) {
+                    _this.nextDevice(app, Devices, _k, e + 1, cb)
+                })
+            }
+
+        } else {
+            cb(app)
+        }
+    },
+    runTask: function (app, arrayTask, e, cb) {
+        if (e < arrayTask.length) {
+            const _k = app._.keys(arrayTask[e])[0]
+            //if (arrayTask[e].ewelink)
+            app.Api[_k].set(app, arrayTask[e][_k][0], arrayTask[e][_k][1], arrayTask[e][_k][2], function (status) {
+                app.programs.functions.runTask(app, arrayTask, e + 1, cb)
+            })
+        } else {
+            cb(app)
         }
     }
 }

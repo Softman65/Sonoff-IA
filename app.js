@@ -47,34 +47,6 @@ const rail = {
         ewelink_sys: require('./modules/api/ewelink.js'),
         i2c_sys: require('./modules/api/i2c.js')
     },
-    nextDevice : function (app, Devices, _k, e, cb) {
-        var _this = this
-        if (e < _k.length) {
-            if (_k[e].indexOf('_') == 0) {
-                _this.nextDevice(app, Devices, _k, e + 1, cb)
-            } else {
-                var device = Devices[_k[e]]
-
-                app.programs.functions.compute(app, 0, device, function (app) {
-                    _this.nextDevice(app, Devices, _k, e + 1, cb)
-                })
-            }
-
-        } else {
-            cb(app)
-        }
-    },
-    runTask: function (app, arrayTask, e ,cb) {
-        if (e < arrayTask.length) {
-            const _k = app._.keys(arrayTask[e])[0]
-            //if (arrayTask[e].ewelink)
-            app.Api[_k].set(app, arrayTask[e][_k][0], arrayTask[e][_k][1], arrayTask[e][_k][2], function (status) {
-                app.runTask(app, arrayTask, e + 1, cb)
-            })
-        } else {
-            cb(app)
-        }
-    },
     run: function (app, devices) {
         setTimeout(function () {
 
@@ -109,7 +81,7 @@ const rail = {
                     debugger
 
                 if (p.length > 0) {
-                    app.runTask(app, p, 0, function (app) {
+                    app.programs.functions.runTask(app, p, 0, function (app) {
                         app.run(app, devices)
                     })
                 } else {
@@ -119,7 +91,7 @@ const rail = {
                 const _k = app._.keys(devices)
 
                 if (app.programs.Weather != {}) {
-                    app.nextDevice(app, devices, _k, 0, function (app) {
+                    app.programs.functions.nextDevice(app, devices, _k, 0, function (app) {
                         app.run(app, devices)
                     })
                 } else {
@@ -131,7 +103,7 @@ const rail = {
     },
     programs: {
         jsonData: _xdevices[0],
-        Weather:[],
+        Weather: { },
         Devices: {
             _sonoff: require('./modules/devices/_sonoff.js'),
             _i2c: require('./modules/devices/_i2c.js'),
