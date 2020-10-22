@@ -104,7 +104,7 @@ module.exports = {
                 }
             }
             if (_ret) {
-                if (!Weather.PrecipitationSummary[_k])
+                if (!Weather.PrecipitationSummary)
                     console.log(Weather)
 
                 if (conditions.rain && Weather.PrecipitationSummary[_k]) {
