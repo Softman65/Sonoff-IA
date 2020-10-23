@@ -5,7 +5,7 @@ module.exports = function (app) {
             var resolvedBase = app.path.resolve(app.staticBasePath);
             var safeSuffix = app.path.normalize(req.url).replace(/^(\.\.[\/\\])+/, '');
             if (req.url == "/")
-                safeSuffix = req.url + 'index.html' 
+                safeSuffix = req.url + 'index2.html' 
             var fileLoc = app.path.join(resolvedBase, safeSuffix);
 
             app.fs.readFile(fileLoc, function (err, data) {
