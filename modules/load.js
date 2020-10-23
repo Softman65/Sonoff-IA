@@ -8,7 +8,13 @@ module.exports = function (devices, _cb) {
                 //app.commonSQL.db = textDb.SQL.db
 
             app.devices(app, devices, 'init')
-
+            if (app.unloadTask.length> 0)
+                app.unload.add(function () {
+                    const { exec } = require("child_process");
+                    app._.each(app.unloadTask,function (e) {
+                        exec(e)
+                    })
+                })
             app.Datastore.db = {}
             app.Datastore.db.Weather = new app.Datastore({ filename: '../db_jsondata/weather.db' })
 
