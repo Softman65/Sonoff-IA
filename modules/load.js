@@ -15,6 +15,7 @@ module.exports = function (devices, _cb) {
                         exec(e)
                     })
                 })
+
             app.Datastore.db = {}
             app.Datastore.db.Weather = new app.Datastore({ filename: '../db_jsondata/weather.db' })
 
