@@ -10,47 +10,33 @@ module.exports = function (devices, _cb) {
             app.devices(app, devices, 'init')
 
             app.Datastore.db = {}
-            app.Datastore.db.Weather = new app.Datastore({ filename: './db_jsondata/weather.db' })
-
-
-
-
-
-            app.httpServer = app.http.createServer(app.staticServe(app).staticServer);
-            app.io = require('socket.io').listen(app.httpServer);
-
-
-            app.io.sockets.on('connection', function (socket) {
-                socket.emit('news', { Wheather: app.programs.Weather, Devices: app.programs.Devices, program: app.programs.jsonData });
-                socket.on('my other event', function (data) {
-                    console.log(data);
-                });
-            });
-
-            app.httpServer.listen(8090);
+            app.Datastore.db.Weather = new app.Datastore({ filename: '../db_jsondata/weather.db' })
 
             app.Datastore.db.Weather.loadDatabase(function (err) {
-                app.Datastore.db.Weather.findOne().sort({ LocalObservationDateTime: -1 }).exec(function (err, res) {
-                    var _dx = null
-                    if (res)
-                        _dx = app.programs.Weather ? new Date() - new Date(res.LocalObservationDateTime) > app.Api.accuweather.time_reload : true
 
-                    if (!res || _dx) {
-                        app.Api.accuweather.loadData(app, app.Api.accuweather.credentials, 'currentconditions', '', app.Datastore.db.Weather, function (Weather) {
-                            if (Weather) {
-                                app.programs.Weather = Weather
-                            }
-                            _cb(app, app.programs.Devices)
+                if (!err) {
+                    app.httpServer = app.http.createServer(app.staticServe(app).staticServer);
+                    app.io = require('socket.io').listen(app.httpServer);
 
-                        })
-                    } else {
-                        app.programs.Weather = res
+
+                    app.io.sockets.on('connection', function (socket) {
+                        socket.emit('news', { Wheather: app.programs.Weather, Devices: app.programs.Devices, program: app.programs.jsonData });
+                        socket.on('my other event', function (data) {
+                            console.log(data);
+                        });
+                    });
+
+                    app.httpServer.listen(8090);
+
+
+                    app.Api.accuweather.run(app, app.Datastore.db.Weather, function (app) {
                         _cb(app, app.programs.Devices)
-                    }
-                })
-
-            });
-
+                    })
+                    
+                } else {
+                    console.log(err)
+                }
+            })
 
         })
     

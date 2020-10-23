@@ -47,60 +47,6 @@ const rail = {
         ewelink_sys: require('./modules/api/ewelink.js'),
         i2c_sys: require('./modules/api/i2c.js')
     },
-    run: function (app, devices) {
-        setTimeout(function () {
-
-            if (app.lastminute != new Date().getMinutes()) {
-                app.io.emit('tick', { hello: new Date() });
-
-                app.lastminute = new Date().getMinutes()
-                const _dx = app.programs.Weather ? new Date() - new Date(app.programs.Weather.LocalObservationDateTime) > app.Api.accuweather.time_reload : true
-
-                if (_dx) {
-
-                    app.programs.Weather = {}
-                    app.Api.accuweather.loadData(app, app.Api.accuweather.credentials, 'currentconditions', '', app.Datastore.db.Weather, function (Weather) {
-                        app.programs.Weather = Weather
-
-                        app.run(app, devices)
-                    })
-
-                }
-
-        
-            }
-
-            if (app.works.length > 0) {
-                const p = app.works[0]
-                
-
-                app.works = _.drop(app.works)
-                process.stdout.write('.')
-
-                if (!app._.isArray(p))
-                    debugger
-
-                if (p.length > 0) {
-                    app.programs.functions.runTask(app, p, 0, function (app) {
-                        app.run(app, devices)
-                    })
-                } else {
-                    app.run(app, devices)
-                }
-            } else {
-                const _k = app._.keys(devices)
-
-                if (app.programs.Weather != {}) {
-                    app.programs.functions.nextDevice(app, devices, _k, 0, function (app) {
-                        app.run(app, devices)
-                    })
-                } else {
-                    app.run(app, devices)
-                }
-            }
-
-        }, 1000)
-    },
     programs: {
         jsonData: _xdevices[0],
         Weather: { },
@@ -112,11 +58,25 @@ const rail = {
         Sun: require('./modules/programs/sun.js'),
         EveryTime: require('./modules/programs/EveryTime.js'),
         EveryHour: require('./modules/programs/EveryHour.js')
-    }
+    },
+    run: function (app, devices) {
+        //app._k = app._.keys(devices)
+        setInterval(function () {
+
+            if (app.lastminute != new Date().getMinutes()) {
+                app.io.emit('tick', { hello: new Date() });
+                app.lastminute = new Date().getMinutes()
+            }
+
+            app.works.length > 0 ? app.programs.functions.nextWork(app, app.works[0]) : app.programs.functions.nextDevice(app, devices, app.programs._k, 0)
+
+        }, 1000)
+    },
 }
 
 rail.initialize(_xdevices, function (app, devices) {
-    app.run(app, app.programs.Devices)
+    app.programs._k = app._.remove(app._.keys(devices), function (e) { return e.indexOf("_")==-1 })
+    app.run(app, devices)
 })
 
 

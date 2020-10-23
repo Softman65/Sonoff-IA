@@ -173,32 +173,35 @@ module.exports = {
             _cb(app)
         }
     },
-    nextDevice: function (app, Devices, _k, e, cb) {
+    nextDevice: function (app, Devices, _k, e) {
         var _this = this
         if (e < _k.length && app.programs.Weather != {}) {
-            if (_k[e].indexOf('_') == 0) {
-                _this.nextDevice(app, Devices, _k, e + 1, cb)
-            } else {
+
                 var device = Devices[_k[e]]
 
-                app.programs.functions.compute(app, 0, device, function (app) {
-                    _this.nextDevice(app, Devices, _k, e + 1, cb)
-                })
-            }
-
-        } else {
-            cb(app)
+            _this.compute(app, 0, device, function (app) {
+                    _this.nextDevice(app, Devices, _k, e + 1)
+            })
         }
     },
-    runTask: function (app, arrayTask, e, cb) {
+    runTask: function (app, arrayTask, e) {
         if (e < arrayTask.length) {
             const _k = app._.keys(arrayTask[e])[0]
             //if (arrayTask[e].ewelink)
             app.Api[_k].set(app, arrayTask[e][_k][0], arrayTask[e][_k][1], arrayTask[e][_k][2], function (status) {
-                app.programs.functions.runTask(app, arrayTask, e + 1, cb)
+                app.programs.functions.runTask(app, arrayTask, e + 1)
             })
-        } else {
-            cb(app)
         }
+    },
+    nextWork: function (app,work) {
+        process.stdout.write('.')
+
+        app.works = app._.drop(app.works)
+        if (work.length > 0) {
+            this.runTask(app, work, 0) 
+        }
+        
+        app.io.emit('tick', { works: app.works });
+        process.stdout.write('+')
     }
 }
