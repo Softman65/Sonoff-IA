@@ -187,7 +187,9 @@ module.exports = {
     runTask: function (app, arrayTask, e) {
         if (e < arrayTask.length) {
             const _k = app._.keys(arrayTask[e])[0]
-            //if (arrayTask[e].ewelink)
+
+            app.io.emit('tick', { task: arrayTask[e][_k] });
+
             app.Api[_k].set(app, arrayTask[e][_k][0], arrayTask[e][_k][1], arrayTask[e][_k][2], function (status) {
                 app.programs.functions.runTask(app, arrayTask, e + 1)
             })
@@ -200,8 +202,7 @@ module.exports = {
         if (work.length > 0) {
             this.runTask(app, work, 0) 
         }
-        
-        app.io.emit('tick', { works: app.works });
+
         process.stdout.write('+')
     }
 }
