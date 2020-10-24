@@ -2039,6 +2039,9 @@
     <Content Include="http\plugins\toastr\toastr.js.map" />
     <Content Include="http\plugins\toastr\toastr.min.css" />
     <Content Include="http\plugins\toastr\toastr.min.js" />
+    <Content Include="http\plugins\_underscore\underscore-min.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="mimes.json">
       <SubType>Code</SubType>
     </Content>
@@ -2352,6 +2355,7 @@
     <Folder Include="http\plugins\jszip\" />
     <Folder Include="http\plugins\moment\" />
     <Folder Include="http\plugins\moment\locale\" />
+    <Folder Include="http\plugins\_underscore\" />
     <Folder Include="http\plugins\overlayScrollbars\" />
     <Folder Include="http\plugins\overlayScrollbars\css\" />
     <Folder Include="http\plugins\overlayScrollbars\js\" />

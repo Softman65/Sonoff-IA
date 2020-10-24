@@ -26,7 +26,7 @@ const rail = {
     path: require('path'),
     http : require('http'),
     inquirer: require('inquirer'),
-    mysql: require('mysql'),
+    //mysql: require('mysql'),
     ewelink: require('ewelink-api'),
     Datastore: require('nedb'),
 

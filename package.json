@@ -9,9 +9,8 @@
   "dependencies": {
     "connect": "^3.7.0",
     "console-stamp": "^0.2.9",
-    "ewelink-api": "^3.0.0",
+    "ewelink-api": "^3.1.1",
     "inquirer": "^7.3.3",
-    "mysql": "^2.18.1",
     "nedb": "^1.8.0",
     "readline": "^1.3.0",
     "socket.io": "^2.3.0",
