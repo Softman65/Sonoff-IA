@@ -29,7 +29,7 @@ const rail = {
     //mysql: require('mysql'),
     ewelink: require('ewelink-api'),
     Datastore: require('nedb'),
-
+    ejs:require('ejs'),
     PROJECT_DIR: __dirname + '\\',
 
     date: null,

@@ -2,31 +2,44 @@ module.exports = function (app) {
     return {
         staticServer: function (req, res) {
 
-            var resolvedBase = app.path.resolve(app.staticBasePath);
-            var safeSuffix = app.path.normalize(req.url).replace(/^(\.\.[\/\\])+/, '');
-            if (req.url == "/")
-                safeSuffix = req.url + 'index2.html' 
-            var fileLoc = app.path.join(resolvedBase, safeSuffix);
+            if (req.url == "/") {
+                var resolvedBase = app.path.resolve(app.staticBasePath + '/views/index');
+                safeSuffix = req.url + 'index.ejs'
+                var fileLoc = app.path.join(resolvedBase, safeSuffix);
 
-            app.fs.readFile(fileLoc, function (err, data) {
-                if (err) {
-                    res.writeHead(404, 'Not Found');
-                    res.write('404: File Not Found!');
+                app.fs.readFile(fileLoc, function (err, data) {
+                    res.setHeader("content-type", 'text/html');
+                    res.statusCode = 200;
+
+                    res.write(app.ejs.render(data.toString(), {}, { root: resolvedBase }) );
                     return res.end();
-                }
-                var extension = fileLoc.substring(
-                    fileLoc.lastIndexOf(".")
-                );
+                })
 
-                var type = app.mimes[extension];
-                if (type) {
-                    res.setHeader("content-type", type);
-                }
-                res.statusCode = 200;
+            } else {
+                var resolvedBase = app.path.resolve(app.staticBasePath+'/public');
+                var safeSuffix = app.path.normalize(req.url).replace(/^(\.\.[\/\\])+/, '');
+                var fileLoc = app.path.join(resolvedBase, safeSuffix);
+            
+                app.fs.readFile(fileLoc, function (err, data) {
+                    if (err) {
+                        res.writeHead(404, 'Not Found');
+                        res.write('404: File Not Found!');
+                        return res.end();
+                    }
+                    var extension = fileLoc.substring(
+                        fileLoc.lastIndexOf(".")
+                    );
 
-                res.write(data);
-                return res.end();
-            });
+                    var type = app.mimes[extension];
+                    if (type) {
+                        res.setHeader("content-type", type);
+                    }
+                    res.statusCode = 200;
+
+                    res.write(data);
+                    return res.end();
+                });
+            }
         }
     }
     

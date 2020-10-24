@@ -9,6 +9,7 @@
   "dependencies": {
     "connect": "^3.7.0",
     "console-stamp": "^0.2.9",
+    "ejs": "^3.1.5",
     "ewelink-api": "^3.1.1",
     "inquirer": "^7.3.3",
     "nedb": "^1.8.0",
