@@ -4,7 +4,7 @@ require('console-stamp')(console, 'HH:MM:ss');
 require('./modules/sun.js')
 
 //const ewelink = require('ewelink-api');
-const _ = require('lodash')
+const _ = require('underscore')
 const READLINE = require('readline');
 
 function clear() {
@@ -77,7 +77,7 @@ const rail = {
 }
 
 rail.initialize(_xdevices, function (app, devices) {
-    app.programs._k = app._.remove(app._.keys(devices), function (e) { return e.indexOf("_")==-1 })
+    app.programs._k = app._.filter(app._.keys(devices), function (e) { return e.indexOf("_")==-1 })
     app.run(app, devices)
 })
 
