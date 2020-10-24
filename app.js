@@ -67,10 +67,11 @@ const rail = {
 
             if (app.lastminute != new Date().getMinutes()) {
                 app.io.emit('tick', { hello: new Date() });
+                app.programs.functions.nextDevice(app, devices, app.programs._k, 0)
                 app.lastminute = new Date().getMinutes()
             }
 
-            app.works.length > 0 ? app.programs.functions.nextWork(app, app.works[0]) : app.programs.functions.nextDevice(app, devices, app.programs._k, 0)
+            app.works.length > 0 ? app.programs.functions.nextWork(app, app.works[0]) : null
 
         }, 1000)
     },
