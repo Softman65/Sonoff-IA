@@ -21,7 +21,7 @@ _xdevices._k= null
 
 const rail = {
 
-    _ : require('lodash'),
+    _ : require('underscore'),
     fs:require('fs'),
     path: require('path'),
     http : require('http'),
