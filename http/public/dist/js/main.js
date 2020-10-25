@@ -10,7 +10,7 @@ var app = {
 
     template: function (JsonData, template, el) {
         const _t = _.template(template)
-        return _t(JsonData)
+        el.html( _t(JsonData) )
     },
     functions: {
         locationHashChanged: function(e) {
@@ -24,7 +24,7 @@ var app = {
         listen: function (app, socket) {
             socket.on('news', function (data) {
                 console.log(data);
-                $("#template-wheather").html(app.template(data.Weather.data, data.Weather.template_html))
+                app.template(data.Weather.data, data.Weather.template_html, $("#template-wheather") )
                 //app.template(data.Weather.data, data.Weather.template_html , $("#template-wheather")).render()
                 //socket.emit('my other event', { my: 'data' });
             });
