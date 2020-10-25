@@ -20,7 +20,7 @@ var app = {
         locationHashChanged: function(e) {
             console.log(location.hash);
             console.log(e.oldURL, e.newURL);
-            this.functions.Menu(app,location.hash)
+            app.functions.Menu(app,location.hash)
             //if (location.hash === "#pageX") {
             //    pageX();
             //}
