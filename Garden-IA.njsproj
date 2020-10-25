@@ -2054,6 +2054,7 @@
     <Content Include="http\public\plugins\_underscore\underscore-min.js">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="http\views\index\content\content-wrapper - Copy.ejs" />
     <Content Include="http\views\index\content\content-wrapper.ejs">
       <SubType>Code</SubType>
     </Content>
