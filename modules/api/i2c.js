@@ -121,19 +121,21 @@ module.exports = {
         //console.log(devices)
         //const status = await this.connection.setDevicePowerState(deviceid, op, n)
 
+        
+
         const cmd = "i2cset -y 1 " + deviceid + ' ' + n + ' ' + op
         const { exec } = require("child_process");
         exec(cmd, (error, stdout, stderr) => {
             if (error) {
+                app.programs.Devices[deviceid].relays[n].state = 'error'
                 console.log(`error: ${error.message}`);
                 //cb(status);
+            } else {
+                console.log(deviceid, op, n)
+                app.programs.Devices[deviceid].relays[n].state = (op == '0x00' ? 'off' : 'on')
+                
             }
-            if (stderr) {
-                console.log(`stderr: ${stderr}`);
-                //cb(status);
-            }
-            console.log(deviceid, op, n)            
-            cb()
+            cb(app.programs.Devices[deviceid].relays[n].state)
         });
 
     }

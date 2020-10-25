@@ -27,6 +27,7 @@ module.exports = function (app, params) {
             app._.each(device.relays, function (_relay, i) {
                 _relay.id = device.adress
                 _relay.e = i + 1
+                _relay.state = _relay.unload?'on':'off'
 
                 _relay.T = _relay.params.EveryTime.lapso == 'H' ? new Date().getHours() : new Date().getMinutes()
                 app.programs.Devices[_relay.id].relays.push(_relay)

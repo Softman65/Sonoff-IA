@@ -188,9 +188,8 @@ module.exports = {
         if (e < arrayTask.length) {
             const _k = app._.keys(arrayTask[e])[0]
 
-            app.io.emit('tick', { _k: _k, task: arrayTask[e][_k] });
-
             app.Api[_k].set(app, arrayTask[e][_k][0], arrayTask[e][_k][1], arrayTask[e][_k][2], function (status) {
+                app.io.emit('tick', { _k: _k, task: arrayTask[e][_k], device: app.programs.Devices, status: status});
                 app.programs.functions.runTask(app, arrayTask, e + 1)
             })
         }
