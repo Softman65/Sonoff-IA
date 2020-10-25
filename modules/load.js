@@ -27,7 +27,7 @@ module.exports = function (devices, _cb) {
 
 
                     app.io.sockets.on('connection', function (socket) {
-                        socket.emit('news', { Wheather: app.programs.Weather, Devices: app.programs.Devices, program: app.programs.jsonData });
+                        socket.emit('news', { Weather: app.programs.Weather, Devices: app.programs.Devices, program: app.programs.jsonData });
                         socket.on('my other event', function (data) {
                             console.log(data);
                         });

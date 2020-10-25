@@ -7,6 +7,28 @@ var app = {
         this.functions.listen(this,this.socket)
         window.onhashchange = this.functions.locationHashChanged;
     },
+    Backbone: {
+        Wheather: function (JsonData, template) {
+            this.views.weather = Backbone.View.extend({
+                template: _.template( template ),
+
+                render: function () {
+                    // This is a dictionary object of the attributes of the models.
+                    // => { name: "Jason", email: "j.smith@gmail.com" }
+                    var dict = JsonData ;
+
+                    // Pass this object onto the template function.
+                    // This returns an HTML string.
+                    var html = this.template(dict);
+
+                    // Append the result to the view's element.
+                    $(this.el).append(html);
+
+                    // ...
+                }
+            });
+        }
+    },
     functions: {
         locationHashChanged: function(e) {
             console.log(location.hash);
@@ -19,6 +41,7 @@ var app = {
         listen: function (app, socket) {
             socket.on('news', function (data) {
                 console.log(data);
+                app.Backbone.Wheather(data.Weather, $("#template-wheather").html())
                 //socket.emit('my other event', { my: 'data' });
             });
             socket.on('weather', function (data) {
