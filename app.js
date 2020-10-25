@@ -21,28 +21,29 @@ _xdevices._k= null
 
 const rail = {
 
-    _ : require('underscore'),
-    fs:require('fs'),
+    _: require('underscore'),
+    fs: require('fs'),
     path: require('path'),
-    http : require('http'),
+    http: require('http'),
     inquirer: require('inquirer'),
     //mysql: require('mysql'),
     ewelink: require('ewelink-api'),
     Datastore: require('nedb'),
-    ejs:require('ejs'),
+    ejs: require('ejs'),
     PROJECT_DIR: __dirname + '\\',
 
     date: null,
     sunset: null,
     sunrise: null,
     works: [],
-    unloadTask:[],
+    unloadTask: [],
     mimes: require("./mimes.json"),
-    staticBasePath : './http',
+    staticBasePath: './http',
     initialize: require('./modules/load.js'),
     staticServe: require('./modules/staticServer.js'),
     devices: require('./modules/devices.js'),
     unload: require('unload'),
+    views:{ },
     Api: {
         //common: require('./modules/api/commons.js'),
         accuweather: require('./modules/api/accuweather.js'),
@@ -78,7 +79,9 @@ const rail = {
 }
 
 rail.initialize(_xdevices, function (app, devices) {
-    app.programs._k = app._.filter(app._.keys(devices), function (e) { return e.indexOf("_")==-1 })
+    app.views.path = app.path.resolve(app.staticBasePath + '/views/index')
+    app.views.weather = app.fs.loadsync(app.views.path + '/snipes/weather.js')
+    app.programs._k = app._.filter(app._.keys(devices), function (e) { return e.indexOf("_") == -1 })
     app.run(app, devices)
 })
 

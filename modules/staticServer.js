@@ -3,7 +3,7 @@ module.exports = function (app) {
         staticServer: function (req, res) {
 
             if (req.url == "/") {
-                var resolvedBase = app.path.resolve(app.staticBasePath + '/views/index');
+                var resolvedBase = app.views.path;
                 safeSuffix = req.url + 'index.ejs'
                 var fileLoc = app.path.join(resolvedBase, safeSuffix);
 
