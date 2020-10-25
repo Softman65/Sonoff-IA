@@ -127,12 +127,12 @@ module.exports = {
         const { exec } = require("child_process");
         exec(cmd, (error, stdout, stderr) => {
             if (error) {
-                app.programs.Devices[deviceid].relays[n].state = 'error'
+                app.programs.Devices[deviceid].relays[n-1].state = 'error'
                 console.log(`error: ${error.message}`);
                 //cb(status);
             } else {
                 console.log(deviceid, op, n)
-                app.programs.Devices[deviceid].relays[n].state = (op == '0x00' ? 'off' : 'on')
+                app.programs.Devices[deviceid].relays[n-1].state = (op == '0x00' ? 'off' : 'on')
                 
             }
             cb(app.programs.Devices[deviceid].relays[n].state)
