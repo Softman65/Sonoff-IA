@@ -14,7 +14,7 @@ var app = {
         window.onhashchange = this.functions.locationHashChanged;
 
         $("input[data-bootstrap-switch]").each(function () {
-            $(this).bootstrapSwitch('state', $(this).prop('checked'));
+            $(this).bootstrapSwitch();
         });
 
     },
