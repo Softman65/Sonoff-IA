@@ -29,10 +29,10 @@
                         ]}
                          with font-awesome or any other icon font library -->
 
-                        <li class="nav-header">EXAMPLES</li>
-                        <% for(var x in Sidebar) { %>
+                        <li class="nav-header"><%=Sidebar.header%></li>
+                        <% for(var x in Sidebar.li) { %>
                           <li class="nav-item">
-                              <a href="<%= Sidebar[x].href %>" class="nav-link">
+                              <a href="#<%= Sidebar[x].href %>" class="nav-link">
                                 <i class="<%= Sidebar[x].class %>"></i>
                                 <p><%= Sidebar[x].p %></p>
                               </a>
