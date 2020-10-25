@@ -2075,6 +2075,9 @@
     <Content Include="http\views\framework\main-sidebar.ejs">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="http\views\index\snipes\localWeather_widget.ejs">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="mimes.json">
       <SubType>Code</SubType>
     </Content>
