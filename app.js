@@ -80,7 +80,7 @@ const rail = {
 
 rail.initialize(_xdevices, function (app, devices) {
     app.views.path = app.path.resolve(app.staticBasePath + '/views/index')
-    app.views.weather = app.fs.readFileSync(app.views.path + '/snipes/weather.js')
+    app.views.weather = app.fs.readFileSync(app.views.path + '/snipes/weather.ejs')
     app.programs._k = app._.filter(app._.keys(devices), function (e) { return e.indexOf("_") == -1 })
     app.run(app, devices)
 })
