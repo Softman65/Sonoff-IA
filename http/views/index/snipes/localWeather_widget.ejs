@@ -5,11 +5,7 @@
         <div class="card p-4">
           <div class="d-flex">
             <h6 class="flex-grow-1">Miraflores de la Sierra</h6>
-            <h6><i class="<%=(!IsDayTime?'fas fa-moon':'fas fa-sun')%>"></i>
-              <%var _t=new Date(LocalObservationDateTime);
-                var _th =' 0'.repeat( 2 - (_t.getHours() + '').length) + _t.getHours();
-                var=_tm =' 0'.repeat( 2 - (_t.getMinutes() + '').length) + _t.getMinutes();
-                =( _th +":"+_tm)%></h6>
+            <h6><i class="<%=(!IsDayTime?'fas fa-moon':'fas fa-sun')%>"></i><%=window.clock(LocalObservationDateTime)%></h6>
           </div>
           <div class="d-flex flex-column temp mt-5 mb-3">
             <h1 class="mb-0 font-weight-bold" id="heading"><%=Temperature.Metric.Value%>° C</h1>

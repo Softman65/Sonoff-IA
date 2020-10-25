@@ -1,5 +1,11 @@
 
+window.clock = function (LocalObservationDateTime) {
 
+    var _t = new Date(LocalObservationDateTime);
+    var _th = ' 0'.repeat(2 - (_t.getHours() + '').length) + _t.getHours();
+    var _tm = ' 0'.repeat(2 - (_t.getMinutes() + '').length) + _t.getMinutes();
+    return (_th + ":" + _tm)
+}
 
 var app = {
     socket: io.connect(window.location.host),
