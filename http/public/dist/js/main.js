@@ -9,25 +9,8 @@ var app = {
     },
 
     template: function (JsonData, template, el) {
-        return Backbone.View.extend({
-            template: _.template( template ),
-
-            render: function () {
-                // This is a dictionary object of the attributes of the models.
-                // => { name: "Jason", email: "j.smith@gmail.com" }
-                var dict = JsonData ;
-
-                // Pass this object onto the template function.
-                // This returns an HTML string.
-                var html = this.template(dict);
-
-                // Append the result to the view's element.
-                el.html(html);
-
-                // ...
-            }
-        });
-        
+        const _t = _.template(template)
+        return _t(JsonData)
     },
     functions: {
         locationHashChanged: function(e) {
@@ -41,7 +24,8 @@ var app = {
         listen: function (app, socket) {
             socket.on('news', function (data) {
                 console.log(data);
-                app.template(data.Weather.data, data.Weather.template_html , $("#template-wheather")).render()
+                $("#template-wheather").html(app.template(data.Weather.data, data.Weather.template_html))
+                //app.template(data.Weather.data, data.Weather.template_html , $("#template-wheather")).render()
                 //socket.emit('my other event', { my: 'data' });
             });
             socket.on('weather', function (data) {
