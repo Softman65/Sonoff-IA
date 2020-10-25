@@ -12,7 +12,7 @@ module.exports = function (app) {
                     res.statusCode = 200;
 
                     res.write(app.ejs.render(data.toString(), {
-                        Menu: [
+                        Main_Sidebar: [
                           { href: "pages/calendar.html", p: "Calendar", class: "nav-icon fas fa-calendar-alt" },
                           { href: "pages/gallery.html", p: "Gallery", class: "nav-icon far fa-image" },
                           { href: "pages/kanban.html", p: "Kanban Board", class: "nav-icon fas fa-columns" }

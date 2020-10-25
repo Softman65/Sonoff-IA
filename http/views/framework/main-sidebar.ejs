@@ -21,7 +21,7 @@
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
-                        {Menu:[
+                        {Main-Sidebar:[
                           {href:"pages/calendar.html",p:"Calendar", class:"nav-icon fas fa-calendar-alt"}
                           {href:"pages/gallery.html",p:"Gallery", class:"nav-icon far fa-image"}
                           {href:"pages/kanban.html",p:"Kanban Board", class:"nav-icon fas fa-columns"}
@@ -30,11 +30,11 @@
                          with font-awesome or any other icon font library -->
 
                         <li class="nav-header">EXAMPLES</li>
-                        <% for(var x in Menu) { %>
+                        <% for(var x in Main_Sidebar) { %>
                           <li class="nav-item">
-                              <a href="<%= Menu[x].href %>" class="nav-link">
-                                  <i class="<%= Menu[x].class %>"></i>
-                                  <p><%= Menu[x].p %></p>
+                              <a href="<%= Main_Sidebar[x].href %>" class="nav-link">
+                                <i class="<%= Main_Sidebar[x].class %>"></i>
+                                <p><%= Main_Sidebar[x].p %></p>
                               </a>
                           </li>
                         <% } %>  
