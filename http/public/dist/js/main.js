@@ -41,7 +41,7 @@ var app = {
         listen: function (app, socket) {
             socket.on('news', function (data) {
                 console.log(data);
-                app.Backbone.template(data.Weather.data, data.Weather.template_html , $("#template-wheather")).render()
+                app.template(data.Weather.data, data.Weather.template_html , $("#template-wheather")).render()
                 //socket.emit('my other event', { my: 'data' });
             });
             socket.on('weather', function (data) {
