@@ -76,6 +76,7 @@
     <Content Include="http\public\dist\img\credit\paypal2.png" />
     <Content Include="http\public\dist\img\credit\visa.png" />
     <Content Include="http\public\dist\img\default-150x150.png" />
+    <Content Include="http\public\dist\img\ext\aspersor.svg" />
     <Content Include="http\public\dist\img\icons.png" />
     <Content Include="http\public\dist\img\photo1.png" />
     <Content Include="http\public\dist\img\photo2.png" />
@@ -2133,6 +2134,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="http\public\dist\img\ext\" />
     <Folder Include="http\views\" />
     <Folder Include="http\public\dist\" />
     <Folder Include="http\public\dist\css\" />
