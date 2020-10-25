@@ -7,9 +7,9 @@ window.clock = function (LocalObservationDateTime) {
     return (_th + ":" + _tm)
 }
 
-var app = {
+window.app = {
     socket: io.connect(window.location.host),
-    initialize: function (app) {
+    initialize: function () {
         this.functions.listen(this,this.socket)
         window.onhashchange = this.functions.locationHashChanged;
 
@@ -58,8 +58,9 @@ var app = {
 
     }
 }
-
-app.initialize(app)
+$(document).ready(function () { 
+    window.app.initialize()
+})
 
 
 
