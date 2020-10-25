@@ -12,6 +12,11 @@ var app = {
     initialize: function (app) {
         this.functions.listen(this,this.socket)
         window.onhashchange = this.functions.locationHashChanged;
+
+        $("input[data-bootstrap-switch]").each(function () {
+            $(this).bootstrapSwitch('state', $(this).prop('checked'));
+        });
+
     },
     template_html: {},
     template: function (JsonData, template, el) {
