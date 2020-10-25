@@ -25,8 +25,6 @@ var app = {
             socket.on('news', function (data) {
                 console.log(data);
                 app.template(data.Weather.data, data.Weather.template_html, $("#template-wheather") )
-                //app.template(data.Weather.data, data.Weather.template_html , $("#template-wheather")).render()
-                //socket.emit('my other event', { my: 'data' });
             });
             socket.on('weather', function (data) {
                 console.log(data);
