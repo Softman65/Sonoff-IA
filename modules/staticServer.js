@@ -11,7 +11,13 @@ module.exports = function (app) {
                     res.setHeader("content-type", 'text/html');
                     res.statusCode = 200;
 
-                    res.write(app.ejs.render(data.toString(), {}, { root: resolvedBase }) );
+                    res.write(app.ejs.render(data.toString(), {
+                        Menu: [
+                          { href: "pages/calendar.html", p: "Calendar", class: "nav-icon fas fa-calendar-alt" },
+                          { href: "pages/gallery.html", p: "Gallery", class: "nav-icon far fa-image" },
+                          { href: "pages/kanban.html", p: "Kanban Board", class: "nav-icon fas fa-columns" }
+                        ]
+                    }, { root: resolvedBase }) );
                     return res.end();
                 })
 
