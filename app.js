@@ -66,7 +66,7 @@ const rail = {
         setInterval(function () {
 
             if (app.lastminute != new Date().getMinutes()) {
-                app.io.emit('tick', { hello: new Date() });
+                app.io.emit('time', { hello: new Date() });
                 app.programs.functions.nextDevice(app, devices, app.programs._k, 0)
                 app.lastminute = new Date().getMinutes()
             }

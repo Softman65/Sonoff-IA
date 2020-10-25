@@ -1,13 +1,4 @@
-   var socket = io.connect(window.location.host);
-   socket.on('news', function (data) {
-        console.log(data);
-        socket.emit('my other event', {my: 'data' });
-   });
 
-    socket.on('tick', function (data) {
-        console.log(data);
-        //socket.emit('my other event', {my: 'data' });
-    });
 
 
 var app = {
@@ -25,12 +16,19 @@ var app = {
             //    pageX();
             //}
         },
-        listen: function (app,socket) {
+        listen: function (app, socket) {
             socket.on('news', function (data) {
                 console.log(data);
-                socket.emit('my other event', { my: 'data' });
+                //socket.emit('my other event', { my: 'data' });
             });
-
+            socket.on('weather', function (data) {
+                console.log(data);
+                //socket.emit('my other event', { my: 'data' });
+            });
+            socket.on('time', function (data) {
+                console.log(data);
+                //socket.emit('my other event', { my: 'data' });
+            });
             socket.on('tick', function (data) {
                 console.log(data);
                 //socket.emit('my other event', {my: 'data' });
