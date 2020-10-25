@@ -7,27 +7,27 @@ var app = {
         this.functions.listen(this,this.socket)
         window.onhashchange = this.functions.locationHashChanged;
     },
-    Backbone: {
-        template: function (JsonData, template, el) {
-            this.views.weather = Backbone.View.extend({
-                template: _.template( template ),
 
-                render: function () {
-                    // This is a dictionary object of the attributes of the models.
-                    // => { name: "Jason", email: "j.smith@gmail.com" }
-                    var dict = JsonData ;
+    template: function (JsonData, template, el) {
+        return Backbone.View.extend({
+            template: _.template( template ),
 
-                    // Pass this object onto the template function.
-                    // This returns an HTML string.
-                    var html = this.template(dict);
+            render: function () {
+                // This is a dictionary object of the attributes of the models.
+                // => { name: "Jason", email: "j.smith@gmail.com" }
+                var dict = JsonData ;
 
-                    // Append the result to the view's element.
-                    el.html(html);
+                // Pass this object onto the template function.
+                // This returns an HTML string.
+                var html = this.template(dict);
 
-                    // ...
-                }
-            });
-        }
+                // Append the result to the view's element.
+                el.html(html);
+
+                // ...
+            }
+        });
+        
     },
     functions: {
         locationHashChanged: function(e) {
@@ -41,7 +41,7 @@ var app = {
         listen: function (app, socket) {
             socket.on('news', function (data) {
                 console.log(data);
-                app.Backbone.template(data.Weather.data, data.Weather.template_html , $("#template-wheather"))
+                app.Backbone.template(data.Weather.data, data.Weather.template_html , $("#template-wheather")).render()
                 //socket.emit('my other event', { my: 'data' });
             });
             socket.on('weather', function (data) {
