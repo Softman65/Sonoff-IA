@@ -29,7 +29,7 @@ var app = {
             });
             socket.on('weather', function (data) {
                 console.log(data);
-                app.template(data.Weather.data, app.template_html.Weather, $("#template-wheather"))
+                app.template(data, app.template_html.Weather, $("#template-wheather"))
                 //socket.emit('my other event', { my: 'data' });
             });
             socket.on('time', function (data) {
