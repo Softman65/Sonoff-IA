@@ -2075,7 +2075,7 @@
     <Content Include="http\views\framework\main-sidebar.ejs">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="http\views\snipes\wheather.ejs">
+    <Content Include="http\views\index\snipes\wheather.ejs">
       <SubType>Code</SubType>
     </Content>
     <Content Include="mimes.json">
@@ -2439,7 +2439,7 @@
     <Folder Include="http\views\index\" />
     <Folder Include="http\views\index\content\" />
     <Folder Include="http\views\framework\" />
-    <Folder Include="http\views\snipes\" />
+    <Folder Include="http\views\index\snipes\" />
     <Folder Include="modules\" />
     <Folder Include="modules\api\" />
     <Folder Include="modules\devices\" />
