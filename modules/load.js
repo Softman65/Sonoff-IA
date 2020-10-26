@@ -27,6 +27,9 @@ module.exports = function (devices, _cb) {
 
 
                     app.io.sockets.on('connection', function (socket) {
+                        socket.on('relayState', function (data) {
+                            console.log(data);
+                        });
                         socket.emit('news', {
                             Weather: {
                                 data: app.programs.Weather,
@@ -35,9 +38,7 @@ module.exports = function (devices, _cb) {
                             Devices: app.programs.Devices,
                             program: app.programs.jsonData
                         });
-                        socket.on('my other event', function (data) {
-                            console.log(data);
-                        });
+
                     });
 
                     app.httpServer.listen(8090);
