@@ -2094,6 +2094,9 @@
     <Content Include="modules\api\ewelink.js">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="modules\api\gpio.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="modules\api\i2c.js">
       <SubType>Code</SubType>
     </Content>

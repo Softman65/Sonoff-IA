@@ -53,7 +53,8 @@ const rail = {
         //common: require('./modules/api/commons.js'),
         accuweather: require('./modules/api/accuweather.js'),
         ewelink_sys: require('./modules/api/ewelink.js'),
-        i2c_sys: require('./modules/api/i2c.js')
+        i2c_sys: require('./modules/api/i2c.js'),
+        gpio_sys: require('./modules/api/gpio.js')
     },
     programs: {
         jsonData: _xdevices[0],

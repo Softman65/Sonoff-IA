@@ -3,7 +3,7 @@ module.exports = {
         app._.each(listTask, function (task) {
             const t = app._.keys(task)
             const k = app._.keys(task[t])
-            app.Api[t[0]].functions.task[k[0]](app, app.works, task[t[0]][k[0]]) //(app, app.Api[t[0]], app.works)
+            app.Api[t[0]].functions.task[k[0]](app, app.works, task[t[0]][k[0]], app.Api[t[0]] ) //(app, app.Api[t[0]], app.works)
         })
     },
     WeatherTask: function (app, _this, program, _params, _cb) {
@@ -189,7 +189,9 @@ module.exports = {
             const _k = app._.keys(arrayTask[e])[0]
 
             app.Api[_k].set(app, arrayTask[e][_k][0], arrayTask[e][_k][1], arrayTask[e][_k][2], function (status) {
-                app.io.emit('deviceTask', { _id: arrayTask[e][_k][0], _e: arrayTask[e][_k][1], task: arrayTask[e][_k], device: app.programs.Devices[arrayTask[e][_k][0]], status: status});
+                if (status)
+                    app.io.emit('deviceTask', { _id: arrayTask[e][_k][0], _e: arrayTask[e][_k][1], task: arrayTask[e][_k], device: app.programs.Devices[arrayTask[e][_k][0]], status: status });
+
                 app.programs.functions.runTask(app, arrayTask, e + 1)
             })
         }
