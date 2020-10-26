@@ -89,11 +89,11 @@ module.exports = {
         if (conditions) {
             if (conditions.IsDayTime) {
                 if (Weather.IsDayTime) {
-                    if (conditions.IsDayTime.morning && (_hour > 8 && _hour < 13)) {
+                    if (conditions.IsDayTime.morning && ( _hour < 13)) {
                         _ret = conditions.IsDayTime.morning
                         _retString.IsDayTime = _ret ? 'Ok es por la mañana' : 'riego de MAÑANA no activado'
                     } else {
-                        if (conditions.IsDayTime.afternoon && (_hour > 12 && _hour < 20)) {
+                        if (conditions.IsDayTime.afternoon && (_hour > 12)) {
                             _ret = conditions.IsDayTime.afternoon
                             _retString.IsDayTime = _ret ? 'Ok es por la tarde' : 'riego de TARDE no activado'
                         }
