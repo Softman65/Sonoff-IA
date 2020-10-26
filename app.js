@@ -57,6 +57,7 @@ const rail = {
             _sonoff: require('./modules/devices/_sonoff.js'),
             _i2c: require('./modules/devices/_i2c.js'),
         },
+        IO : require('./modules/io.js'),
         functions: require('./modules/functions.js'),
         Sun: require('./modules/programs/sun.js'),
         EveryTime: require('./modules/programs/EveryTime.js'),

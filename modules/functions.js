@@ -189,7 +189,7 @@ module.exports = {
             const _k = app._.keys(arrayTask[e])[0]
 
             app.Api[_k].set(app, arrayTask[e][_k][0], arrayTask[e][_k][1], arrayTask[e][_k][2], function (status) {
-                app.io.emit('tick', { _id: arrayTask[e][_k][0], _e: arrayTask[e][_k][1], task: arrayTask[e][_k], device: app.programs.Devices, status: status});
+                app.io.emit('deviceTask', { _id: arrayTask[e][_k][0], _e: arrayTask[e][_k][1], task: arrayTask[e][_k], device: app.programs.Devices[arrayTask[e][_k][0]], status: status});
                 app.programs.functions.runTask(app, arrayTask, e + 1)
             })
         }

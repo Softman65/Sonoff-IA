@@ -27,9 +27,11 @@ module.exports = function (devices, _cb) {
 
 
                     app.io.sockets.on('connection', function (socket) {
-                        socket.on('relayState', function (data) {
-                            console.log(data);
-                        });
+
+                        app._.each(app.programs.IO.listen(app), function (_f, name) {
+                            socket.on(name,_f)
+                        })
+
                         socket.emit('news', {
                             Weather: {
                                 data: app.programs.Weather,

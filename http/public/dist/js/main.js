@@ -70,6 +70,9 @@ window.app = {
             time: function (data) {
                 console.log(data);
             },
+            deviceTask: function (data) {
+                debugger
+            },
             tick: function (data) {
                 console.log(data);
             },

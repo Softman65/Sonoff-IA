@@ -2106,6 +2106,9 @@
     <Content Include="modules\functions.js">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="modules\io.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="modules\load.js">
       <SubType>Code</SubType>
     </Content>
