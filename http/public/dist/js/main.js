@@ -15,6 +15,9 @@ window.app = {
 
         $("input[data-bootstrap-switch]").each(function () {
             $(this).bootstrapSwitch();
+            $(this).on('change.bootstrapSwitch', function (e) {
+                debugger
+            })
         });
 
     },

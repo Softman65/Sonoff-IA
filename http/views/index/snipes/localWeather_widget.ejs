@@ -1,8 +1,7 @@
 <div class="d-flex">
   <h6 class="flex-grow-1">Miraflores de la Sierra</h6>
   <h6>
-    <i class=""
-      <%=(!IsDayTime?'fas fa-moon':'fas fa-sun')%>">
+    <i class="<%=(!IsDayTime?'fas fa-moon':'fas fa-sun')%>">
     </i><%=window.clock(LocalObservationDateTime)%>
   </h6>
 </div>
@@ -33,7 +32,7 @@
     </p>
   </div>
   <div>
-    <img src="https://developer.accuweather.com/sites/default/files/"<%='0'.repeat( 2 - (WeatherIcon + '').length) + WeatherIcon%>-s.png" width="100px"/>
+    <img src="https://developer.accuweather.com/sites/default/files/<%='0'.repeat( 2 - (WeatherIcon + '').length) + WeatherIcon%>-s.png" width="100px"/>
   </div>
 </div>
  
