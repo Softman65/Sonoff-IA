@@ -1,5 +1,5 @@
 module.exports = {
-    GPIO: null, //require('onoff').Gpio ,
+    GPIO: require('onoff').Gpio ,
     pins: new Array(40),
 
     functions: {
@@ -16,13 +16,13 @@ module.exports = {
         },
         task: {
             new: function (device, arrayWorks, params) {
-                //arrayWorks.push([{ gpio_sys: ['new', params.pin, params.action] }])
+                arrayWorks.push([{ gpio_sys: ['new', params.pin, params.action] }])
             },
             writeSync: function (device, arrayWorks, params) {
-                //arrayWorks.push([{ gpio_sys: ['writeSync', params.pin, params.action] }])
+                arrayWorks.push([{ gpio_sys: ['writeSync', params.pin, params.action] }])
             },
             unexport: function (device, arrayWorks, params) {
-                //arrayWorks.push([{ gpio_sys: ['unexport', params.pin, params.action] }])
+                arrayWorks.push([{ gpio_sys: ['unexport', params.pin, params.action] }])
             },
         }
 
