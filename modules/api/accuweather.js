@@ -70,36 +70,37 @@ module.exports =  {
         //}
 
     },
-    reload: function (app,db,_cback) {
-        
-        db.findOne().sort({ LocalObservationDateTime: -1 }).exec(function (err, res) {
-            var _dx = null
-            if (res)
-                _dx = app.programs.Weather ? new Date() - new Date(res.LocalObservationDateTime) > app.Api.accuweather.time_reload : true
+    reload: function (app, db, _cback) {
+        app.noSqldb.open(app, db, function (app, db) {
+            db.findOne().sort({ LocalObservationDateTime: -1 }).exec(function (err, res) {
+                var _dx = null
+                if (res)
+                    _dx = app.programs.Weather ? new Date() - new Date(res.LocalObservationDateTime) > app.Api.accuweather.time_reload : true
 
-            if (!res || _dx) {
-                app.Api.accuweather.loadData(app, app.Api.accuweather.credentials, 'currentconditions', '', db, function (Weather) {
-                    if (Weather != null)
-                        app.programs.Weather = Weather
+                if (!res || _dx) {
+                    app.Api.accuweather.loadData(app, app.Api.accuweather.credentials, 'currentconditions', '', db, function (Weather) {
+                        if (Weather != null)
+                            app.programs.Weather = Weather
 
+                        if (_cback)
+                            _cback(app)
+                    })
+                } else {
+                    if (res)
+                        app.programs.Weather = res
                     if (_cback)
                         _cback(app)
-                })
-            } else {
-                if (res)
-                    app.programs.Weather = res
-                if (_cback)
-                    _cback(app)
-            } 
+                }
+            })
         })
 
     },
-    run: function (app,db,cb) {
+    run: function (app,dbName,cb) {
         const _this = this
 
-        _this.reload(app, db, function () {
+        _this.reload(app, dbName, function () {
             setInterval(function () {
-                _this.reload(app, db)
+                _this.reload(app, dbName)
             }, _this.time_reload)
             cb(app)
         })

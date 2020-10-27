@@ -31,6 +31,7 @@ const rail = {
     path: require('path'),
     http: require('http'),
     inquirer: require('inquirer'),
+    mkdirp : require('mkdirp'),
     //mysql: require('mysql'),
     ewelink: require('ewelink-api'),
     Datastore: require('nedb'),
@@ -47,6 +48,7 @@ const rail = {
     initialize: require('./modules/load.js'),
     staticServe: require('./modules/staticServer.js'),
     devices: require('./modules/devices.js'),
+    noSqldb:require('./modules/sql/nedb.js')
     unload: require('unload'),
     views:{ },
     Api: {

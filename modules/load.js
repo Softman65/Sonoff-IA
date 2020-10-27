@@ -15,44 +15,41 @@ module.exports = function (devices, _cb) {
                         exec(e)
                     })
                 })
+            app.noSqldb.open(app, 'Weather', function (app) {
 
-            app.Datastore.db = {}
-            app.Datastore.db.Weather = new app.Datastore({ filename: '../db_jsondata/weather.db' })
-
-            app.Datastore.db.Weather.loadDatabase(function (err) {
-
-                if (!err) {
-                    app.httpServer = app.http.createServer(app.staticServe(app).staticServer);
-                    app.io = require('socket.io').listen(app.httpServer);
+                    if (!err) {
+                        app.httpServer = app.http.createServer(app.staticServe(app).staticServer);
+                        app.io = require('socket.io').listen(app.httpServer);
 
 
-                    app.io.sockets.on('connection', function (socket) {
+                        app.io.sockets.on('connection', function (socket) {
 
-                        app._.each(app.programs.IO.listen(app), function (_f, name) {
-                            socket.on(name,_f)
-                        })
+                            app._.each(app.programs.IO.listen(app), function (_f, name) {
+                                socket.on(name, _f)
+                            })
 
-                        socket.emit('news', {
-                            Weather: {
-                                data: app.programs.Weather,
-                                template_html: app.views.weather
-                            },
-                            Devices: app.programs.Devices,
-                            program: app.programs.jsonData
+                            socket.emit('news', {
+                                Weather: {
+                                    data: app.programs.Weather,
+                                    template_html: app.views.weather
+                                },
+                                Devices: app.programs.Devices,
+                                program: app.programs.jsonData
+                            });
+
                         });
 
-                    });
-
-                    app.httpServer.listen(8090);
+                        app.httpServer.listen(8090);
 
 
-                    app.Api.accuweather.run(app, app.Datastore.db.Weather, function (app) {
-                        _cb(app, app.programs.Devices)
-                    })
-                    
-                } else {
-                    console.log(err)
-                }
+                        app.Api.accuweather.run(app, 'Weather', function (app) {
+                            _cb(app, app.programs.Devices)
+                        })
+
+                    } else {
+                        console.log(err)
+                    }
+                })
             })
 
         })

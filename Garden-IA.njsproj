@@ -2127,6 +2127,9 @@
     <Content Include="modules\programs\sun.js">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="modules\sql\nedb.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="modules\sql\sql_common.js">
       <SubType>Code</SubType>
     </Content>
