@@ -3,9 +3,9 @@ module.exports = {
         const _d = new Date()
         const _m = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
 
-        const _f = path + "/" + _d.getFullYear + '/' + _m[_d.getMonth()] 
+        const _f = path + "/" + _d.getFullYear() + '/' + _m[_d.getMonth()] 
 
-        return 
+        return _f
     },
     open: function (app, _t, cb) {
         if (!app.Datastore.db)
