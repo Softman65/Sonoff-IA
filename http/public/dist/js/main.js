@@ -71,7 +71,7 @@ window.app = {
                 console.log(data);
             },
             deviceTask: function (data) {
-                debugger
+                console.log(data)
             },
             tick: function (data) {
                 console.log(data);
