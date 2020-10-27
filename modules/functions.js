@@ -136,6 +136,7 @@ module.exports = {
         return { _r: _retString, _response: _ret, _w: Weather }
     },
     compute: function (app, n_relay, device, _cb) {
+        
         if (device.before && n_relay == 0)
             this.task(app, device.before)
 
@@ -151,6 +152,8 @@ module.exports = {
             if (_relay.T <= (_relay.params.EveryTime.lapso == 'H' ? new Date().getHours() : new Date().getMinutes())) {
                 _this[_relay.program].start(app, _this, _relay, function (IA_response) {
                     if (IA_response) {
+                        if (IA_response._response)
+                            app.relayAction = true
                         //rail.commonSQL.procSQL('saveData(?,?,?)', [JSON.stringify(IA_response._w), JSON.stringify(IA_response._r), IA_response._response], function (err, record) {
                         //console.log('save data mysql ' + (err ? 'FAIL' : 'Ok'))
                         _this.functions.compute(app, _relay.e, device, _cb)
@@ -165,7 +168,7 @@ module.exports = {
         } else {
             if (app.works.length > 1) {
                 if (device.after)
-                    this.task(app, device.after)
+                    app.relayAction ? this.task(app, device.after) : app.works = []
             } else {
                 app.works = []
             }
@@ -179,6 +182,7 @@ module.exports = {
 
                 var device = Devices[_k[e]]
 
+            app.relayAction = false
             _this.compute(app, 0, device, function (app) {
                     _this.nextDevice(app, Devices, _k, e + 1)
             })
