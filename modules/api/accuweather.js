@@ -29,7 +29,8 @@ module.exports =  {
                         db.ensureIndex({ fieldName: 'LocalObservationDateTime', unique: true }, function (err) {
                             if (!err) {
                                 db.insert(_data[0], function (err, newDoc) {
-                                    app.io.emit('weather',  newDoc );
+                                    if(app.io)
+                                        app.io.emit('weather',  newDoc );
                                     cbx(newDoc)
                                 })
                             } else {
