@@ -190,7 +190,7 @@ module.exports = {
 
             app.Api[_k].set(app, arrayTask[e][_k][0], arrayTask[e][_k][1], arrayTask[e][_k][2], function (status) {
                 if (status)
-                    app.io.emit('deviceTask', { _id: arrayTask[e][_k][0], _e: arrayTask[e][_k][1], task: arrayTask[e][_k], device: app.programs.Devices[arrayTask[e][_k][0]], status: status });
+                    app.io.emit('deviceTask', { _id: arrayTask[e][_k][0], _e: arrayTask[e][_k][1], task: arrayTask[e][_k], device: app.programs.Devices[arrayTask[e][_k][0]], status: status, _works: app.works });
 
                 app.programs.functions.runTask(app, arrayTask, e + 1)
             })

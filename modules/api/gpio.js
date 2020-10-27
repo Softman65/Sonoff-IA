@@ -9,6 +9,8 @@ module.exports = {
             },
             writeSync: function (params, _f) {
                 _f.pins[params[0]].writeSync(params[1])
+                app.io.emit('deviceTask', { _id: 'gpio', _e: params[0], status: params[1] , _works: app.works });
+
             },
             unexport: function (params, _f) {
                 _f.pins[params[0]].unexport()
@@ -30,7 +32,7 @@ module.exports = {
     set: async function (app, deviceid, n, op, cb) {
 
         this.functions.actions[deviceid]([n,op], this )
-
+        
     }
         
 }
