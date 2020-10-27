@@ -4,15 +4,15 @@ module.exports = {
 
     functions: {
         actions: {
-            new: function ( params,_f) {
+            new: function (app, params,_f) {
                 _f.pins[params[0]] = new _f.GPIO(params[0], params[1])
             },
-            writeSync: function (params, _f) {
+            writeSync: function (app, params, _f) {
                 _f.pins[params[0]].writeSync(params[1])
                 app.io.emit('deviceTask', { _id: 'gpio', _e: params[0], status: params[1] , _works: app.works });
 
             },
-            unexport: function (params, _f) {
+            unexport: function (app, params, _f) {
                 _f.pins[params[0]].unexport()
             },
         },
@@ -31,7 +31,7 @@ module.exports = {
     },
     set: async function (app, deviceid, n, op, cb) {
 
-        this.functions.actions[deviceid]([n,op], this )
+        this.functions.actions[deviceid](app, [n,op], this )
         
     }
         
