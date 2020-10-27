@@ -48,7 +48,7 @@ const rail = {
     initialize: require('./modules/load.js'),
     staticServe: require('./modules/staticServer.js'),
     devices: require('./modules/devices.js'),
-    noSqldb:require('./modules/sql/nedb.js')
+    noSqldb:require('./modules/sql/nedb.js'),
     unload: require('unload'),
     views:{ },
     Api: {
