@@ -1,5 +1,5 @@
 module.exports = {
-    GPIO: null, //require('onoff').Gpio ,
+    GPIO: require('onoff').Gpio ,
     pins: new Array(40),
 
     functions: {
