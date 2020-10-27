@@ -15,6 +15,7 @@ module.exports = function (devices, _cb) {
                         exec(e)
                     })
                 })
+
             app.noSqldb.open(app, 'Weather', function (app) {
 
                     if (!err) {
@@ -49,7 +50,6 @@ module.exports = function (devices, _cb) {
                     } else {
                         console.log(err)
                     }
-                })
             })
 
         })
