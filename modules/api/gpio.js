@@ -12,7 +12,7 @@ module.exports = {
                 _f.pins[params[0]].writeSync(params[1])
                 app.io.emit('deviceTask', { _id: 'gpio', _e: params[0], status: params[1] , _works: app.works });
 
-                console.log('write in GPIO')
+                console.log('write in GPIO',params[0],params[1])
             },
             unexport: function (app, params, _f) {
                 _f.pins[params[0]].unexport()
