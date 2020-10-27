@@ -16,41 +16,40 @@ module.exports = function (devices, _cb) {
                     })
                 })
 
-            app.noSqldb.open(app, 'Weather', function (app) {
+            //app.noSqldb.open(app, 'Weather', function (app, _db , err) {
 
-                    if (!err) {
-                        app.httpServer = app.http.createServer(app.staticServe(app).staticServer);
-                        app.io = require('socket.io').listen(app.httpServer);
-
-
-                        app.io.sockets.on('connection', function (socket) {
-
-                            app._.each(app.programs.IO.listen(app), function (_f, name) {
-                                socket.on(name, _f)
-                            })
-
-                            socket.emit('news', {
-                                Weather: {
-                                    data: app.programs.Weather,
-                                    template_html: app.views.weather
-                                },
-                                Devices: app.programs.Devices,
-                                program: app.programs.jsonData
-                            });
-
-                        });
-
-                        app.httpServer.listen(8090);
+                //if (!err) {
+                app.Api.accuweather.run(app, 'Weather', function (app) {
+                    app.httpServer = app.http.createServer(app.staticServe(app).staticServer);
+                    app.io = require('socket.io').listen(app.httpServer);
 
 
-                        app.Api.accuweather.run(app, 'Weather', function (app) {
-                            _cb(app, app.programs.Devices)
+                    app.io.sockets.on('connection', function (socket) {
+
+                        app._.each(app.programs.IO.listen(app), function (_f, name) {
+                            socket.on(name, _f)
                         })
 
-                    } else {
-                        console.log(err)
-                    }
-            })
+                        socket.emit('news', {
+                            Weather: {
+                                data: app.programs.Weather,
+                                template_html: app.views.weather
+                            },
+                            Devices: app.programs.Devices,
+                            program: app.programs.jsonData
+                        });
+
+                    });
+
+                    app.httpServer.listen(app.WEBPORT);
+                        
+                    _cb(app, app.programs.Devices)
+                })
+
+                //} else {
+                //    console.log(err)
+                //}
+            //})
 
         })
     

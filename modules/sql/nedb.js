@@ -12,11 +12,13 @@ module.exports = {
             app.Datastore.db = {}
 
         const _p = this.path_filename('../db_jsondata')
-        app.mkdirp(_p, { recursive: true }, function () { 
-            app.Datastore.db[_t] = new app.Datastore({ filename: _p + '/' + _t + '.db' })
-            app.Datastore.db[_t].loadDatabase(function (err) {
-                cb(app, app.Datastore.db[_t])
-            })
+        console.log(_p)
+        app.mkdirp(_p, { recursive: true }) //, function (err) { 
+            
+        app.Datastore.db[_t] = new app.Datastore({ filename: _p + '/' + _t + '.db' })
+        app.Datastore.db[_t].loadDatabase(function (err) {
+            cb(app, app.Datastore.db[_t], err)
         })
+        //})
     }
 }
