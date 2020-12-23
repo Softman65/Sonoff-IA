@@ -156,7 +156,14 @@ const program = {
             },
             init: function (cb) {
                 const _this = this
-
+                function IsJsonString(str) {
+                    try {
+                        var json = JSON.parse(str);
+                        return (typeof json === 'object');
+                    } catch (e) {
+                        return false;
+                    }
+                }
                 app.SerialPort.list().then(function (ports) {
                     ports.forEach(function (port) {
                         console.log("Port: ", port);
@@ -189,7 +196,8 @@ const program = {
                                     // get buffered data and parse it to an utf-8 string
                                     data = data.toString('utf-8');
                                     console.log(data)
-                                    _this.go(JSON.parse(data))
+                                    if (IsJsonString(data))
+                                        _this.go(JSON.parse(data))
                                     // you could for example, send this data now to the the client via socket.io
                                     // io.emit('emit_data', data);
                                 });
