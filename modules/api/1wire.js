@@ -80,11 +80,11 @@ module.exports = {
                 }
             },
             put: function (device, arrayWorks, params) {
-                arrayWorks.push([{ i2c_sys: [params.device, params.relay, params.action] }])
+                arrayWorks.push([{ onewire_sys: [params.device, params.relay, params.action] }])
             }
         },
     },
-    
+
     push: function (app, _this, arrayWorks, program, _data, cb) {
         //console.log(program)
         app._.each(program.params.actions, function (action) {
@@ -119,21 +119,21 @@ module.exports = {
         //console.log(devices)
         //const status = await this.connection.setDevicePowerState(deviceid, op, n)
 
-        
+
         const opt = op == '0x00' ? false : true
         const cmd = "i2cset -y 1 " + deviceid + ' ' + n + ' ' + op
         const { exec } = require("child_process");
         exec(cmd, (error, stdout, stderr) => {
             if (error) {
-                app.programs.Devices[deviceid].relays[n-1].state = 'error'
+                app.programs.Devices[deviceid].relays[n - 1].state = 'error'
                 console.log(`error: ${error.message}`);
                 //cb(status);
             } else {
                 console.log(deviceid, op, n, opt)
                 app.programs.Devices[deviceid].relays[n - 1].state = opt
-                
+
             }
-            cb(app.programs.Devices[deviceid].relays[n-1].state)
+            cb(app.programs.Devices[deviceid].relays[n - 1].state)
         });
 
     }

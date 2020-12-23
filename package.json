@@ -7,14 +7,17 @@
     "name": ""
   },
   "dependencies": {
+    "colors": "^1.4.0",
     "connect": "^3.7.0",
     "console-stamp": "^0.2.9",
     "ejs": "^3.1.5",
     "ewelink-api": "^3.1.1",
     "inquirer": "^7.3.3",
     "mkdirp": "^1.0.4",
+    "moment": "^2.29.1",
     "nedb": "^1.8.0",
     "readline": "^1.3.0",
+    "serialport": "^9.0.4",
     "socket.io": "^2.3.0",
     "underscore": "^1.11.0",
     "unload": "^2.2.0"

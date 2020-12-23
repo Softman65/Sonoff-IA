@@ -11,7 +11,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>975a757d-7db8-4937-a5b4-0b1be0aca952</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>app.js</StartupFile>
+    <StartupFile>caldera.js</StartupFile>
     <StartWebBrowser>False</StartWebBrowser>
     <SearchPath>
     </SearchPath>
@@ -32,8 +32,7 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="app.js" />
-    <Content Include="ewelink - Copy %282%29.json" />
-    <Content Include="ewelink - Copy.json" />
+    <Content Include="caldera.js" />
     <Content Include="ewelink.json">
       <SubType>Code</SubType>
     </Content>
@@ -2084,6 +2083,9 @@
     <Content Include="mimes.json">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="modules\api\1wire.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="modules\api\accuweather.js">
       <SubType>Code</SubType>
       <TestFramework>Jasmine</TestFramework>
@@ -2101,6 +2103,9 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="modules\devices.js">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="modules\devices\_1wire.js">
       <SubType>Code</SubType>
     </Content>
     <Content Include="modules\devices\_i2c.js">

@@ -1,3 +1,4 @@
+
 module.exports = function (app) {
     return {
         staticServer: function (req, res) {

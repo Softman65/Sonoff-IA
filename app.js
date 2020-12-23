@@ -18,7 +18,7 @@ function clear() {
     READLINE.clearScreenDown(process.stdout);
 }
 
-var _xdevices = JSON.parse(require('fs').readFileSync('ewelink.json', 'utf-8'))
+var _xdevices = JSON.parse( require('fs').readFileSync('ewelink.json', 'utf-8') )
 _xdevices.state= false,
 _xdevices.counter= 0,
 _xdevices._k= null
@@ -56,7 +56,8 @@ const rail = {
         accuweather: require('./modules/api/accuweather.js'),
         ewelink_sys: require('./modules/api/ewelink.js'),
         i2c_sys: require('./modules/api/i2c.js'),
-        gpio_sys: require('./modules/api/gpio.js')
+        gpio_sys: require('./modules/api/gpio.js'),
+        onewire_sys : require('./modules/api/1wire.js')
     },
     programs: {
         jsonData: _xdevices[0],
@@ -64,6 +65,7 @@ const rail = {
         Devices: {
             _sonoff: require('./modules/devices/_sonoff.js'),
             _i2c: require('./modules/devices/_i2c.js'),
+            _1wire: require('./modules/devices/_1wire.js')
         },
         IO : require('./modules/io.js'),
         functions: require('./modules/functions.js'),

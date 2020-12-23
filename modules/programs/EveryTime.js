@@ -4,7 +4,6 @@ module.exports = {
         _this.Devices[device.id].relays.push(device)
         //this.setNewHour(device.params)
     },
-
     start: function (app, _this, program, _cb) {
         var _params = program.params
         this.setNextTime(program, _params)
