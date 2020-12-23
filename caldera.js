@@ -49,7 +49,7 @@ const program = {
                     //console.log(`error: ${error.message}`);
                     //cb(status);
                 } else {
-                    console.log(deviceid, op, n, opt)
+                    //console.log(deviceid, op, n, opt)
                     app.programs.Devices[deviceid].relays[n - 1].state = opt
 
                 }
