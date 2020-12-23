@@ -188,7 +188,7 @@ const program = {
                                 parser.on('data', function (data) {
                                     // get buffered data and parse it to an utf-8 string
                                     data = data.toString('utf-8');
-                                    //console.log(data)
+                                    console.log(data)
                                     _this.go(JSON.parse(data))
                                     // you could for example, send this data now to the the client via socket.io
                                     // io.emit('emit_data', data);
